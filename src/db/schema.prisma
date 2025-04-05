@@ -1,0 +1,54 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Tag {
+    frontend
+    backend
+    mobile
+    DevOps
+    baas
+    saas
+}
+
+model Project {
+    id String @id @default(uuid())
+    title String
+    description String
+    githubLink String
+    liveDemo String
+    imageUrl String
+    techStack TechStack[] 
+    createdAt DateTime  @default(now())
+    updatedAt DateTime @updatedAt @default(now())
+}
+
+
+model TechStack {
+    id String @id @default(uuid())
+    name String
+    imageUrl String
+    tag Tag
+    projects Project[] 
+    createdAt DateTime  @default(now())
+    updatedAt DateTime @updatedAt @default(now())
+}
+
+model Experience {
+  id           String   @id @default(cuid())
+  companyName  String
+  companyImage String
+  startingDate DateTime
+  endDate      DateTime?
+  stillWorking Boolean  @default(false)
+  description  String
+  role         String[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime  @updatedAt @default(now())
+}
+

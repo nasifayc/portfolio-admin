@@ -42,7 +42,7 @@ export async function updateSession(request: NextRequest) {
   );
 
   const path = request.nextUrl.pathname;
-  if (protectedRoutes.includes(path)) {
+  if (path.startsWith("/admin")) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -62,8 +62,6 @@ export async function updateSession(request: NextRequest) {
       );
     }
   }
-
-  console.log("Middleware running...");
 
   return supabaseResponse;
 }

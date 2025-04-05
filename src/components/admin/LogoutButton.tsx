@@ -40,7 +40,7 @@ function LogoutButton() {
   };
   return (
     <Button
-      className="hidden w-24 sm:block"
+      className="flex w-24 items-center justify-center sm:block"
       disabled={loading}
       variant="outline"
       onClick={handleLogout}
