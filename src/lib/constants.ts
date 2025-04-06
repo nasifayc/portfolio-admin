@@ -3,7 +3,7 @@ import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
 export const appbarItems = [
   {
     title: "Overview",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
@@ -13,22 +13,22 @@ export const appbarItems = [
   },
   {
     title: "Experience",
-    url: "#",
+    url: "/experience",
     icon: Calendar,
   },
   {
     title: "Service",
-    url: "#",
+    url: "service",
     icon: Search,
   },
   {
     title: "Skills",
-    url: "#",
+    url: "/skills",
     icon: Settings,
   },
   {
     title: "Testimonies",
-    url: "#",
+    url: "testimonies",
     icon: Settings,
   },
 ];
