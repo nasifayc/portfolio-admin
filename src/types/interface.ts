@@ -14,3 +14,15 @@ export interface TechStack {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  githubLink: string;
+  liveDemo: string;
+  imageUrl: string;
+  techStack: string[];
+  createdAt?: string;
+  updatedAt?: string;
+}

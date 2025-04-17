@@ -4,7 +4,7 @@ import React from "react";
 
 function UnAuthorized() {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex h-screen flex-col items-center justify-center gap-4">
       <p>UnAuthorized Access</p>{" "}
       <Link href="/">
         <Button>Back To Home</Button>

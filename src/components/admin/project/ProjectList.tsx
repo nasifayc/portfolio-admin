@@ -8,9 +8,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../../ui/card";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
+import Image from "next/image";
 
 type Props = {
   data: {
@@ -56,10 +57,39 @@ function ProjectList({ data }: Props) {
                 <CardDescription>{project.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>More details</p>
+                <Image
+                  src={project.imageUrl}
+                  alt="Project Image"
+                  className="h-auto w-auto"
+                  width={200}
+                  height={200}
+                  objectFit="cover"
+                />
+                <div className="flex gap-2">
+                  {project.techStack.map((tech) => (
+                    <div className="flex gap-2">
+                      <Image
+                        src={tech.imageUrl}
+                        alt="Tech Image"
+                        width={20}
+                        height={20}
+                        className="rounded-full"
+                      />
+                      <p>{tech.name}</p>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
-              <CardFooter>
-                <p>GitHub | Live Demo</p>
+              <CardFooter className="flec gap-4">
+                <a href={project.githubLink} target="blank">
+                  <Button variant="outline">Source Code</Button>
+                </a>
+                <a href={project.liveDemo} target="blank">
+                  <Button variant="outline">Live Demo</Button>
+                </a>
+
+                {/* <Button>Live Demo</Button> */}
+                {/* <p>GitHub | Live Demo</p> */}
               </CardFooter>
             </Card>
           ))}

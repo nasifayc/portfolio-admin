@@ -80,8 +80,6 @@ function TechStackForm() {
       });
 
       if (error || !imageUrl) {
-        console.error("Error", error);
-        console.error("Image Url", imageUrl);
         toast.error("Upload failed");
         return;
       }
@@ -99,7 +97,6 @@ function TechStackForm() {
       <Input placeholder="Tech Name (e.g React)" {...register("name")} />
       {errors.name && <p>{errors.name.message}</p>}
 
-      {/* <Input type="file" onChange={async (e) => {}} /> */}
       <Select
         defaultValue="frontend"
         onValueChange={(value) =>

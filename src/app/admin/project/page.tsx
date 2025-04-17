@@ -1,5 +1,5 @@
 import { getProjects } from "@/actions/project";
-import ProjectList from "@/components/admin/ProjectList";
+import ProjectList from "@/components/admin/project/ProjectList";
 
 async function ProjectPage() {
   const response = await getProjects();

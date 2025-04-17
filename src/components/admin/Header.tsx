@@ -12,7 +12,13 @@ async function Header() {
   return (
     <header className="bg-sidebar relative flex h-24 w-full items-center justify-between px-3 sm:px-8">
       <SidebarTrigger className="absolute top-1 left-1" />
-      <p>Dashboared</p>
+      <Link href="/">
+        <Button variant="outline" className="cursor-pointer">
+          Preview
+        </Button>
+      </Link>
+
+      {/* <p>Dashboared</p> */}
 
       <div className="flex gap-4">
         <ModeToggle />

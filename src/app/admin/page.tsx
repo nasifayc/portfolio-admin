@@ -1,4 +1,3 @@
-
 import {
   Card,
   CardContent,
@@ -7,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import React from "react";
 
 function AdminPage() {
   return (
