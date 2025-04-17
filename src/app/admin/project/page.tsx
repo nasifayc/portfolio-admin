@@ -1,7 +1,9 @@
-import React from "react";
+import { getProjects } from "@/actions/project";
+import ProjectList from "@/components/admin/ProjectList";
 
-function ProjectPage() {
-  return <div>ProjectPage</div>;
+async function ProjectPage() {
+  const response = await getProjects();
+  return <ProjectList data={response} />;
 }
 
 export default ProjectPage;
