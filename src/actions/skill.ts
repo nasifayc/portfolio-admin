@@ -1,3 +1,5 @@
+"use server";
+
 import { getUser } from "@/auth/server";
 import { prisma } from "@/db/prisma";
 import { handleError } from "@/lib/utils";
@@ -89,3 +91,11 @@ export const deleteSkill = async (id: string) => {
     return handleError(e);
   }
 };
+
+// export const uploadImage = async (file: File) => {
+//   try {
+//     const {} = await su;
+//   } catch (e) {
+//     handleError(e);
+//   }
+// };

@@ -8,29 +8,24 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../../ui/card";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
+import Image from "next/image";
 
 type Props = {
   data: {
     errorMessage: string | null;
-    projects?: {
+    skills?: {
       id: string;
-      title: string;
-      description: string;
-      githubLink: string;
-      liveDemo: string;
+      name: string;
       imageUrl: string;
-      techStack: {
-        name: string;
-        imageUrl: string;
-      }[];
+      tag: string;
     }[];
   };
 };
 
-function ProjectList({ data }: Props) {
+function TechStackList({ data }: Props) {
   useEffect(() => {
     if (data.errorMessage) {
       toast.error("Failed to get projects", {
@@ -47,27 +42,34 @@ function ProjectList({ data }: Props) {
   if (data.errorMessage) return null;
   return (
     <div>
-      {data.projects && data.projects.length > 0 ? (
+      {data.skills && data.skills.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {data.projects.map((project) => (
-            <Card key={project.id}>
+          {data.skills.map((skill) => (
+            <Card key={skill.id}>
               <CardHeader>
-                <CardTitle>{project.title}</CardTitle>
-                <CardDescription>{project.description}</CardDescription>
+                <CardTitle>{skill.name}</CardTitle>
+                {/* <CardDescription>{project.description}</CardDescription> */}
               </CardHeader>
               <CardContent>
-                <p>More details</p>
+                <Image
+                  src={skill.imageUrl}
+                  alt="Skill Image"
+                  width={100}
+                  height={100}
+                />
+                {/* <p>More details</p> */}
               </CardContent>
               <CardFooter>
-                <p>GitHub | Live Demo</p>
+                {skill.tag}
+                {/* <p>GitHub | Live Demo</p> */}
               </CardFooter>
             </Card>
           ))}
         </div>
       ) : (
         <div className="text-muted-foreground flex h-[300px] flex-col items-center justify-center gap-2 text-center">
-          <p>No projects found. Add some from your dashboard.</p>
-          <Link href="project/form">
+          <p>No skill found. Add some from your dashboard.</p>
+          <Link href="skills/form">
             <Button>Add</Button>
           </Link>
         </div>
@@ -76,12 +78,4 @@ function ProjectList({ data }: Props) {
   );
 }
 
-export default ProjectList;
-
-// id String @id @default(uuid())
-//     name String
-//     imageUrl String
-//     tag Tag
-//     projects Project[]
-//     createdAt DateTime  @default(now())
-//     updatedAt DateTime @updatedAt @default(now())
+export default TechStackList;
