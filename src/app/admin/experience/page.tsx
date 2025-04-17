@@ -1,7 +1,9 @@
-import React from "react";
+import { getExperiences } from "@/actions/experiance";
+import ExperianceList from "@/components/admin/experiance/ExperianceList";
 
-function ExperiencePage() {
-  return <div>ExperiencePage</div>;
+async function ExperiencePage() {
+  const response = await getExperiences();
+  return <ExperianceList data={response} />;
 }
 
 export default ExperiencePage;
