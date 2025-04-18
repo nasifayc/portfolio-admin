@@ -1,6 +1,6 @@
 import { AppSidebar } from "@/components/admin/AppSidebar";
 import Header from "@/components/admin/Header";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import React from "react";
 
 function AdminLayout({ children }: { children: React.ReactNode }) {

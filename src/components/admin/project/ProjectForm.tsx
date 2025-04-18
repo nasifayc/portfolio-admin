@@ -38,7 +38,6 @@ interface Option {
 function ProjectForm({ data }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isPending, startTransition] = useTransition();
-  //   const [techStack, setTeckStack] = useState<Option[]>([]);
 
   const router = useRouter();
   const {
@@ -123,9 +122,9 @@ function ProjectForm({ data }: Props) {
       {errors.title && <p>{errors.title.message}</p>}
       <Textarea placeholder="Description" {...register("description")} />
       {errors.description && <p>{errors.description.message}</p>}
-      <Input placeholder="GitHub Link" {...register("githubLink")} />
+      <Input placeholder="GitHub Link" type="url" {...register("githubLink")} />
       {errors.githubLink && <p>{errors.githubLink.message}</p>}
-      <Input placeholder="Live Demo URL" {...register("liveDemo")} />
+      <Input placeholder="Live Demo URL" type="url" {...register("liveDemo")} />
       {errors.liveDemo && <p>{errors.liveDemo.message}</p>}
       <div>
         <MultiSelect

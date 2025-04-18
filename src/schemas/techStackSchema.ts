@@ -14,3 +14,16 @@ export const projectSchema = z.object({
   imageUrl: z.string().url("Invalid image URL"),
   techStack: z.array(z.string()).min(1, "Select at least one tech"),
 });
+
+export const experienceSchema = z.object({
+  companyName: z.string().min(1, "Company name is required"),
+  companyImage: z.string().url("Company image must be a valid URL"),
+  startingDate: z.coerce.date({
+    required_error: "Start date is required",
+    invalid_type_error: "Invalid date format",
+  }),
+  endDate: z.coerce.date().optional(),
+  stillWorking: z.boolean(),
+  description: z.string().min(1, "Description is required"),
+  role: z.array(z.string().min(1, "Role cannot be empty")),
+});
