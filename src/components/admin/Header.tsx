@@ -5,14 +5,16 @@ import { ModeToggle } from "../shared/DarkModeToggler";
 import LogoutButton from "./LogoutButton";
 import { getUser } from "@/auth/server";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Loader2 } from "lucide-react";
 
 async function Header() {
   const user = await getUser();
 
   return (
-    <header className="bg-sidebar relative flex h-24 w-full items-center justify-between px-3 sm:px-8">
-      <SidebarTrigger className="absolute top-1 left-1" />
-      <Link href="/">
+    <header className="bg-card relative flex h-24 items-center justify-between px-3 shadow-sm sm:px-8">
+      <SidebarTrigger className="h absolute top-8 left-1" />
+
+      <Link href="/" className="pl-10">
         <Button variant="outline" className="cursor-pointer">
           Preview
         </Button>

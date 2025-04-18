@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { Button } from "../../ui/button";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {
   data: {
@@ -48,48 +49,72 @@ function ProjectList({ data }: Props) {
   if (data.errorMessage) return null;
   return (
     <div>
+      <Link href="project/form">
+        <Button variant="outline" className="mb-6 cursor-pointer">
+          Create Project
+        </Button>
+      </Link>
       {data.projects && data.projects.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {data.projects.map((project) => (
-            <Card key={project.id}>
+            <Card
+              key={project.id}
+              className="flex cursor-pointer flex-col justify-between shadow-md transition-transform duration-500 group-hover:scale-110"
+            >
               <CardHeader>
-                <CardTitle>{project.title}</CardTitle>
-                <CardDescription>{project.description}</CardDescription>
+                <CardTitle className="text-lg md:text-xl">
+                  {project.title}
+                </CardTitle>
+                <CardDescription className="text-muted-foreground text-sm">
+                  {project.description}
+                </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 <Image
                   src={project.imageUrl}
                   alt="Project Image"
-                  className="h-auto w-auto"
-                  width={200}
-                  height={200}
+                  className="h-48 w-full rounded-md object-cover"
+                  width={400}
+                  height={400}
                   objectFit="cover"
                 />
-                <div className="flex gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {project.techStack.map((tech) => (
-                    <div className="flex gap-2">
+                    <div
+                      key={tech.name}
+                      className="bg-secondary-foreground flex items-center justify-between gap-1 rounded-sm px-3 py-1 text-xs"
+                    >
                       <Image
                         src={tech.imageUrl}
                         alt="Tech Image"
                         width={20}
                         height={20}
-                        className="rounded-full"
+                        className="h-4 w-4 rounded-full"
                       />
-                      <p>{tech.name}</p>
+                      <p className="text-background">{tech.name}</p>
                     </div>
                   ))}
                 </div>
               </CardContent>
-              <CardFooter className="flec gap-4">
-                <a href={project.githubLink} target="blank">
-                  <Button variant="outline">Source Code</Button>
+              <CardFooter className="mt-4 flex flex-wrap gap-2">
+                <a
+                  href={project.githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button variant="outline" className="w-full sm:w-auto">
+                    Source Code
+                  </Button>
                 </a>
-                <a href={project.liveDemo} target="blank">
-                  <Button variant="outline">Live Demo</Button>
+                <a
+                  href={project.liveDemo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button variant="outline" className="w-full sm:w-auto">
+                    Live Demo
+                  </Button>
                 </a>
-
-                {/* <Button>Live Demo</Button> */}
-                {/* <p>GitHub | Live Demo</p> */}
               </CardFooter>
             </Card>
           ))}
@@ -107,11 +132,3 @@ function ProjectList({ data }: Props) {
 }
 
 export default ProjectList;
-
-// id String @id @default(uuid())
-//     name String
-//     imageUrl String
-//     tag Tag
-//     projects Project[]
-//     createdAt DateTime  @default(now())
-//     updatedAt DateTime @updatedAt @default(now())

@@ -116,7 +116,11 @@ function TechStackForm() {
         </SelectContent>
       </Select>
       {errors.tag && <p>{errors.tag.message}</p>}
-      <Input type="file" onChange={handleImageChange} />
+      <Input
+        type="file"
+        accept=".svg,image/svg+xml"
+        onChange={handleImageChange}
+      />
       {previewUrl && (
         <Image
           src={previewUrl}

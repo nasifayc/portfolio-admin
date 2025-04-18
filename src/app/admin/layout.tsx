@@ -9,7 +9,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
       <AppSidebar />
       <div className="flex min-h-screen w-full flex-col">
         <Header />
-        <main className="xl:px:8 flex flex-1 flex-col px-4 pt-10">
+        <main className="flex flex-1 flex-col px-4 py-16 xl:px-8">
           {children}
         </main>
       </div>

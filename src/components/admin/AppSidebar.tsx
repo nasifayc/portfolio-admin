@@ -1,3 +1,4 @@
+"use client";
 import {
   Sidebar,
   SidebarContent,
@@ -11,10 +12,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { appbarItems } from "@/lib/constants";
-import { Separator } from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
+import { useState } from "react";
 
 export function AppSidebar() {
+  const [currBar, setCurrBar] = useState(0);
+
   return (
     <Sidebar>
       <SidebarHeader />
@@ -24,9 +27,13 @@ export function AppSidebar() {
 
           <SidebarGroupContent className="pt-8">
             <SidebarMenu className="flex flex-col gap-2">
-              {appbarItems.map((item) => (
+              {appbarItems.map((item, index) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild className="text-muted-foreground">
+                  <SidebarMenuButton
+                    asChild
+                    className={`text-muted-foreground ${currBar === index ? "bg-muted" : ""}`}
+                    onClick={() => setCurrBar(index)}
+                  >
                     <Link href={`/admin${item.url}`}>
                       <item.icon />
                       <span>{item.title}</span>
