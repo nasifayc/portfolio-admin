@@ -3,6 +3,7 @@
 import { getUser } from "@/auth/server";
 import { prisma } from "@/db/prisma";
 import { handleError } from "@/lib/utils";
+import { deleteImage } from "./storage";
 
 type ExperienceProps = {
   companyName: string;
@@ -62,9 +63,9 @@ export const getExperienceById = async (id: string) => {
 
     if (!experience) throw new Error("Experience not found");
 
-    return { errorMessage: null, experience };
+    return { experience };
   } catch (e) {
-    return handleError(e);
+    return { experience: undefined };
   }
 };
 
@@ -117,8 +118,14 @@ export const deleteExperience = async (id: string) => {
     const user = await getUser();
     if (!user) throw new Error("Unauthorized");
 
-    await prisma.experience.delete({ where: { id } });
+    const { experience } = await getExperienceById(id);
+    if (!experience) throw new Error("Experience not found");
+    if (experience.companyImage) {
+      const { error } = await deleteImage(experience.companyImage);
+      if (error) throw new Error("Failed to delete image");
+    }
 
+    await prisma.experience.delete({ where: { id } });
     return { errorMessage: null };
   } catch (e) {
     return handleError(e);

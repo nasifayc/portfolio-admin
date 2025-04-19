@@ -79,13 +79,13 @@ function ProjectList({ data }: Props) {
   };
 
   return (
-    <div>
+    <>
       <div className="mb-6 flex w-full items-center justify-between gap-4">
         <div className="relative flex flex-4/5 items-center">
           <SearchIcon className="absolute left-2 size-4" />
           <Input
             className="bg-muted h-12 pl-8 text-sm"
-            placeholder="Search your project..."
+            placeholder="Search projects"
             value={searchProject}
             onChange={(e) => setSearchProject(e.target.value)}
           />
@@ -192,7 +192,7 @@ function ProjectList({ data }: Props) {
           </Link>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

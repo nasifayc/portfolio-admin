@@ -37,7 +37,7 @@ function DeleteProjectButton({ projectId, deleteProjectLocally }: Props) {
           },
         });
       } else {
-        toast.success("Note Deleted Successfully!", {
+        toast.success("Project Deleted Successfully!", {
           style: {
             backgroundColor: "#4CAF50",
             color: "white",
@@ -53,7 +53,7 @@ function DeleteProjectButton({ projectId, deleteProjectLocally }: Props) {
       <AlertDialogTrigger asChild>
         <Button
           variant="ghost"
-          className="size-7 -translate-y-1/2 cursor-pointer p-0 opacity-0 group-hover/item:opacity-100 [&_svg]:size-3"
+          className="size-7 -translate-y-1/2 cursor-pointer p-0 text-red-500 opacity-0 group-hover/item:opacity-100 [&_svg]:size-3"
         >
           <Trash2 />
         </Button>

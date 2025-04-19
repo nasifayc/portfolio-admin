@@ -1,17 +1,33 @@
 "use client";
-import { useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../../ui/card";
+import { useEffect, useMemo, useState, useTransition } from "react";
+
 import { toast } from "sonner";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Edit, SearchIcon, Trash2 } from "lucide-react";
+import Fuse from "fuse.js";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { deleteExperience } from "@/actions/experiance";
+
 type Props = {
   data: {
     errorMessage: string | null;
@@ -24,10 +40,17 @@ type Props = {
       stillWorking: boolean;
       description: string;
       role: string[];
+      updatedAt: Date;
     }[];
   };
 };
 function ExperianceList({ data }: Props) {
+  const [searchExp, setSearchExp] = useState("");
+  const [localExperiences, setLocalExperiences] = useState(
+    data.experiences ?? [],
+  );
+  const [isPending, startTransition] = useTransition();
+
   useEffect(() => {
     if (data.errorMessage) {
       toast.error("Failed to get projects", {
@@ -42,53 +65,160 @@ function ExperianceList({ data }: Props) {
   }, [data.errorMessage]);
 
   if (data.errorMessage) return null;
+
+  useEffect(() => {
+    setLocalExperiences(data.experiences ?? []);
+  }, [data.experiences]);
+
+  const fuse = useMemo(() => {
+    return new Fuse(localExperiences, {
+      keys: ["companyName", "description", "role"],
+      threshold: 0.4,
+    });
+  }, [localExperiences]);
+
+  const filteredExperiences = searchExp
+    ? fuse.search(searchExp).map((result) => result.item)
+    : localExperiences;
+
+  const deleteExperienceLocally = (expId: string) => {
+    setLocalExperiences((prev) =>
+      prev.filter((experience) => experience.id !== expId),
+    );
+  };
+
+  const handleDeleteExp = (expId: string) => {
+    startTransition(async () => {
+      const { errorMessage } = await deleteExperience(expId);
+      if (errorMessage) {
+        toast.error("Request Failed", {
+          description: errorMessage,
+          style: {
+            backgroundColor: "#F44336",
+            color: "white",
+            border: "1px solid #E53935",
+          },
+        });
+      } else {
+        toast.success("Work Experience Deleted Successfully!", {
+          style: {
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "1px solid #388E3C",
+          },
+        });
+        deleteExperienceLocally(expId);
+      }
+    });
+  };
   return (
-    <div>
-      {data.experiences && data.experiences.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {data.experiences.map((exp) => (
-            <Card key={exp.id}>
-              <CardHeader>
-                <CardTitle>{exp.companyName}</CardTitle>
-                <CardDescription>{exp.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Image
-                  src={exp.companyImage}
-                  alt="Company Image"
-                  className="h-auto w-auto"
-                  width={50}
-                  height={50}
-                  objectFit="cover"
-                />
-                <div className="flex flex-col gap-2">
-                  {exp.role.map((role) => (
-                    <div className="flex flex-col gap-2">
-                      <p>{role}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-              <CardFooter className="flex gap-1">
-                <p>{exp.startingDate.toLocaleDateString()}</p>
-                <p>
-                  {exp.stillWorking
-                    ? "Present"
-                    : exp.endDate?.toLocaleDateString()}
-                </p>
-              </CardFooter>
-            </Card>
-          ))}
+    <>
+      <div className="mb-6 flex w-full items-center justify-between gap-4">
+        <div className="relative flex flex-4/5 items-center">
+          <SearchIcon className="absolute left-2 size-4" />
+          <Input
+            className="bg-muted h-12 pl-8 text-sm"
+            placeholder="Search experiances"
+            value={searchExp}
+            onChange={(e) => setSearchExp(e.target.value)}
+          />
         </div>
-      ) : (
-        <div className="text-muted-foreground flex h-[300px] flex-col items-center justify-center gap-2 text-center">
-          <p>No Experience found</p>
+        <div className="w-full">
           <Link href="experience/form">
-            <Button>Add</Button>
+            <Button variant="outline" className="h-12 cursor-pointer font-bold">
+              New Experience
+            </Button>
           </Link>
         </div>
-      )}
-    </div>
+      </div>
+      <div>
+        <Table>
+          <TableCaption>A list of your recent work experiences.</TableCaption>
+          <TableHeader>
+            <TableRow className="bg-muted">
+              <TableHead className="w-[100px]">Id</TableHead>
+              <TableHead>Company Name</TableHead>
+              <TableHead>Company Image</TableHead>
+              <TableHead>Duration</TableHead>
+              {/* <TableHead>Description</TableHead> */}
+              <TableHead>Role</TableHead>
+              <TableHead>Updated At</TableHead>
+              <TableHead>Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredExperiences ? (
+              filteredExperiences.map((exp, index) => (
+                <TableRow
+                  key={exp.id}
+                  className={`${index % 2 !== 0 ? "bg-muted" : ""}`}
+                >
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{exp.companyName}</TableCell>
+                  <TableCell>
+                    <Image
+                      className="h-10 w-10 rounded-full object-cover"
+                      src={exp.companyImage}
+                      alt="Company Image"
+                      width={40}
+                      height={40}
+                    />
+                  </TableCell>
+                  <TableCell>{`${exp.startingDate.toLocaleDateString()} - ${exp.stillWorking ? "Present" : exp.endDate?.toLocaleDateString()}`}</TableCell>
+                  {/* <TableCell>
+                    <p className="text-wrap break-words overflow-ellipsis">
+                      {exp.description}
+                    </p>
+                  </TableCell> */}
+                  <TableCell>
+                    {exp.role.map((r) => (
+                      <p>{r}</p>
+                    ))}
+                  </TableCell>
+                  <TableCell>{exp.updatedAt.toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <Button className="cursor-pointer">Action</Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="cursor-pointer">
+                          <span>
+                            <Edit />
+                          </span>
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="cursor-pointer text-red-500"
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                "Are you sure you want to delete this experience?",
+                              )
+                            ) {
+                              handleDeleteExp(exp.id);
+                            }
+                          }}
+                        >
+                          <Trash2 className="text-red-500" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell>No work experience</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   );
 }
 

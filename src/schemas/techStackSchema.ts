@@ -24,6 +24,8 @@ export const experienceSchema = z.object({
   }),
   endDate: z.coerce.date().optional(),
   stillWorking: z.boolean(),
-  description: z.string().min(1, "Description is required"),
+  description: z
+    .string()
+    .min(10, "Description must be at leat 10 characters long"),
   role: z.array(z.string().min(1, "Role cannot be empty")),
 });
