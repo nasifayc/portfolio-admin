@@ -3,6 +3,7 @@
 import { getUser } from "@/auth/server";
 import { prisma } from "@/db/prisma";
 import { handleError } from "@/lib/utils";
+import { deleteImage } from "./storage";
 
 type ProjectProps = {
   title: string;
@@ -13,15 +14,15 @@ type ProjectProps = {
   techStack: string[];
 };
 
-type UpdateProjectProps = {
-  id: string;
-  title?: string;
-  description?: string;
-  githubLink?: string;
-  liveDemo?: string;
-  imageUrl?: string;
-  techStack?: string[];
-};
+// type UpdateProjectProps = {
+//   id: string;
+//   title?: string;
+//   description?: string;
+//   githubLink?: string;
+//   liveDemo?: string;
+//   imageUrl?: string;
+//   techStack?: string[];
+// };
 
 export const createProject = async ({
   title,
@@ -73,21 +74,23 @@ export const getProjectById = async (projectId: string) => {
     });
 
     if (!project) throw new Error("Project not found");
-    return { project, errorMessage: null };
+    return { project };
   } catch (e) {
-    return handleError(e);
+    return { project: undefined };
   }
 };
 
-export const updateProject = async ({
-  id,
-  title,
-  description,
-  githubLink,
-  liveDemo,
-  imageUrl,
-  techStack,
-}: UpdateProjectProps) => {
+export const updateProject = async (
+  id: string,
+  {
+    title,
+    description,
+    githubLink,
+    liveDemo,
+    imageUrl,
+    techStack,
+  }: ProjectProps,
+) => {
   try {
     const user = await getUser();
     if (!user) throw new Error("Unauthorized");
@@ -119,6 +122,17 @@ export const deleteProject = async (id: string) => {
   try {
     const user = await getUser();
     if (!user) throw new Error("User not found");
+    const project = await prisma.project.findUnique({
+      where: { id },
+      select: { imageUrl: true },
+    });
+
+    if (!project) throw new Error("Project not found");
+    if (project.imageUrl) {
+      const { error } = await deleteImage(project.imageUrl);
+      if (error) throw new Error("Failed to delete image from storage");
+    }
+
     await prisma.project.delete({ where: { id } });
     return { errorMessage: null };
   } catch (e) {

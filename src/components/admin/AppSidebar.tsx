@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { appbarItems } from "@/lib/constants";
 import Link from "next/link";
@@ -22,7 +23,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader />
       <SidebarContent>
-        <SidebarGroup>
+        <SidebarGroup className="relative">
           <SidebarGroupLabel>Manage Portfolio</SidebarGroupLabel>
 
           <SidebarGroupContent className="pt-8">

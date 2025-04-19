@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { projectSchema } from "@/schemas/techStackSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState, useTransition } from "react";
+import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { MultiSelect } from "react-multi-select-component";
@@ -14,8 +14,9 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { convertBlobUrlToFile } from "@/lib/utils";
-import { uploadImage } from "@/actions/storage";
-import { createProject } from "@/actions/project";
+import { deleteImage, uploadImage } from "@/actions/storage";
+import { createProject, updateProject } from "@/actions/project";
+import { ProjectProps } from "./ProjectList";
 
 type ProjectFormData = z.infer<typeof projectSchema>;
 
@@ -28,6 +29,8 @@ type Props = {
       imageUrl: string;
     }[];
   };
+
+  project?: ProjectProps;
 };
 
 interface Option {
@@ -35,9 +38,15 @@ interface Option {
   label: string;
 }
 
-function ProjectForm({ data }: Props) {
+function ProjectForm({ data, project }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (project?.imageUrl) {
+      setPreviewUrl(project.imageUrl);
+    }
+  }, [project]);
 
   const router = useRouter();
   const {
@@ -48,11 +57,14 @@ function ProjectForm({ data }: Props) {
     formState: { errors },
   } = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
-    // defaultValues: {
-    //   name: "",
-    //   imageUrl: "",
-    //   tag: "frontend",
-    // },
+    defaultValues: {
+      title: project?.title ?? "",
+      description: project?.description ?? "",
+      githubLink: project?.githubLink ?? "",
+      liveDemo: project?.liveDemo ?? "",
+      imageUrl: project?.imageUrl ?? "",
+      techStack: project?.techStack.map((skill) => skill.id) ?? [],
+    },
   });
 
   const techStackOptions: Option[] = (data.skills ?? []).map((skill) => ({
@@ -75,14 +87,19 @@ function ProjectForm({ data }: Props) {
       }
 
       const file = await convertBlobUrlToFile(previewUrl);
+      if (project) {
+        const { data, error } = await deleteImage(project.imageUrl);
+        if (error) {
+          toast.error("Failed to delete old image");
+          return;
+        }
+      }
       const { imageUrl, error } = await uploadImage({
         file,
         bucket: "projects",
       });
 
       if (error || !imageUrl) {
-        console.log("Error", error);
-        console.log("ImageUrl ", imageUrl);
         toast.error("Upload failed");
         return;
       }
@@ -104,13 +121,18 @@ function ProjectForm({ data }: Props) {
 
   const onSubmit = async (data: ProjectFormData) => {
     startTransition(async () => {
-      const { errorMessage } = await createProject(data);
-      if (errorMessage) {
-        toast.error("Failed To Create Project!", {
-          description: errorMessage,
+      const res = project
+        ? await updateProject(project.id, data)
+        : await createProject(data);
+
+      if (res.errorMessage) {
+        toast.error("Something went wrong", {
+          description: res.errorMessage,
         });
       } else {
-        toast.success("Project created successfully!");
+        toast.success(
+          `Project ${project ? "updated" : "created"} successfully!`,
+        );
         router.replace("/admin/project");
       }
     });
