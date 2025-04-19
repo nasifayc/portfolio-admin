@@ -1,7 +1,7 @@
 "use client";
 
-import { createExperience } from "@/actions/experiance";
-import { uploadImage } from "@/actions/storage";
+import { createExperience, updateExperience } from "@/actions/experiance";
+import { deleteImage, uploadImage } from "@/actions/storage";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -14,26 +14,42 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn, convertBlobUrlToFile } from "@/lib/utils";
 import { experienceSchema } from "@/schemas/techStackSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon, Loader2, X } from "lucide-react";
+import { Asterisk, CalendarIcon, Loader2, Upload, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState, useTransition } from "react";
+import { ChangeEvent, useEffect, useState, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { format } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
+import { ExperienceProps } from "./ExperianceList";
+import Link from "next/link";
+import { Label } from "@/components/ui/label";
 
 type ExperianceFormData = z.infer<typeof experienceSchema>;
 
-function ExperianceForm() {
+type Props = {
+  experiance?: ExperienceProps;
+};
+
+function ExperianceForm({ experiance }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isPending, startTransition] = useTransition();
-  const [isStillworking, setIsStillWorking] = useState<boolean>(false);
+  const [isPending2, startTransition2] = useTransition();
+  const [isStillworking, setIsStillWorking] = useState(false);
   const [roles, setRoles] = useState<string[]>([]);
   const [roleInput, setRoleInput] = useState("");
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (!experiance) return;
+
+    setPreviewUrl(experiance.companyImage ?? "");
+    setRoles(experiance.role ?? []);
+    setIsStillWorking(!!experiance.stillWorking);
+  }, [experiance]);
 
   const {
     register,
@@ -45,8 +61,13 @@ function ExperianceForm() {
   } = useForm<ExperianceFormData>({
     resolver: zodResolver(experienceSchema),
     defaultValues: {
-      stillWorking: false,
-      role: [],
+      companyName: experiance?.companyName || "",
+      companyImage: experiance?.companyImage || "",
+      description: experiance?.description || "",
+      startingDate: experiance?.startingDate || new Date(),
+      endDate: experiance?.endDate || undefined,
+      stillWorking: experiance?.stillWorking || false,
+      role: experiance?.role || [],
     },
   });
 
@@ -81,14 +102,20 @@ function ExperianceForm() {
       }
 
       const file = await convertBlobUrlToFile(previewUrl);
+
+      if (experiance) {
+        const { error } = await deleteImage(experiance.companyImage);
+        if (error) {
+          toast.error("Failed to delete old image.");
+          return;
+        }
+      }
       const { imageUrl, error } = await uploadImage({
         file,
         bucket: "exp",
       });
 
       if (error || !imageUrl) {
-        console.log("Error", error);
-        console.log("ImageUrl ", imageUrl);
         toast.error("Upload failed");
         return;
       }
@@ -100,60 +127,87 @@ function ExperianceForm() {
   };
 
   const onSubmit = async (data: ExperianceFormData) => {
-    startTransition(async () => {
-      const { errorMessage } = await createExperience(data);
-      if (errorMessage) {
-        toast.error("Failed To Create Experiance!", {
-          description: errorMessage,
+    startTransition2(async () => {
+      const res = experiance
+        ? await updateExperience(experiance.id, data)
+        : await createExperience(data);
+
+      if (res.errorMessage) {
+        toast.error("Something went wrong", {
+          description: res.errorMessage,
         });
       } else {
-        toast.success("Experiance created successfully!");
+        toast.success(
+          `Work experience ${experiance ? "updated" : "created"} successfully!`,
+        );
         router.replace("/admin/experience");
       }
     });
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input placeholder="Company name" {...register("companyName")} />
-      {errors.companyName && <p>{errors.companyName.message}</p>}
-      <Textarea placeholder="Description" {...register("description")} />
-      {errors.description && <p>{errors.description.message}</p>}
-      <Controller
-        control={control}
-        name="startingDate"
-        render={({ field }) => (
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-[240px] justify-start text-left font-normal",
-                  !field.value && "text-muted-foreground",
-                )}
-              >
-                <CalendarIcon />
-                {field.value ? (
-                  format(field.value, "PPP")
-                ) : (
-                  <span>Pick starting date</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={field.value}
-                onSelect={field.onChange}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col items-center justify-start gap-4"
+    >
+      <div className="flex w-4/6 justify-between gap-2 lg:w-3/6">
+        <p className="text-lg font-bold lg:text-2xl">
+          {experiance ? "Update Work Experience" : "Create New Experience"}
+        </p>
+        <Link href="/admin/experience">
+          <Button variant="outline" className="cursor-pointer">
+            Cancel
+          </Button>
+        </Link>
+      </div>
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="companyName" className="text-muted-foreground">
+          Company Name
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
+        <Input
+          id="companyName"
+          placeholder="Company name"
+          {...register("companyName")}
+          className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+        {errors.companyName && (
+          <p className="text-xs text-red-500 italic">
+            {errors.companyName.message}
+          </p>
         )}
-      />
-      {!isStillworking && (
+      </div>
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="description" className="text-muted-foreground">
+          Description
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
+        <Textarea
+          id="description"
+          placeholder="Description"
+          {...register("description")}
+          className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+        {errors.description && (
+          <p className="text-xs text-red-500 italic">
+            {errors.description.message}
+          </p>
+        )}
+      </div>
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="startingDate" className="text-muted-foreground">
+          Starting Date
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
+
         <Controller
           control={control}
-          name="endDate"
+          name="startingDate"
           render={({ field }) => (
             <Popover>
               <PopoverTrigger asChild>
@@ -168,7 +222,7 @@ function ExperianceForm() {
                   {field.value ? (
                     format(field.value, "PPP")
                   ) : (
-                    <span>Pick end date</span>
+                    <span>Pick starting date</span>
                   )}
                 </Button>
               </PopoverTrigger>
@@ -183,31 +237,77 @@ function ExperianceForm() {
             </Popover>
           )}
         />
+      </div>
+      {!isStillworking && (
+        <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+          <Label htmlFor="endDate" className="text-muted-foreground">
+            End Date
+            <span className="text-red-500">
+              <Asterisk size={10} />
+            </span>
+          </Label>
+          <Controller
+            control={control}
+            name="endDate"
+            render={({ field }) => (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[240px] justify-start text-left font-normal",
+                      !field.value && "text-muted-foreground",
+                    )}
+                  >
+                    <CalendarIcon />
+                    {field.value ? (
+                      format(field.value, "PPP")
+                    ) : (
+                      <span>Pick end date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            )}
+          />
+        </div>
       )}
 
-      <Controller
-        name="stillWorking"
-        control={control}
-        render={({ field }) => (
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="terms"
-              checked={field.value}
-              onCheckedChange={(checked) => {
-                field.onChange(!!checked);
-                setIsStillWorking(!!checked);
-              }}
-            />
-            <label
-              htmlFor="terms"
-              className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Are you still working?
-            </label>
-          </div>
-        )}
-      />
-      <div className="my-4 space-y-2">
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Controller
+          name="stillWorking"
+          control={control}
+          render={({ field }) => (
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="terms"
+                checked={field.value}
+                onCheckedChange={(checked) => {
+                  field.onChange(!!checked);
+                  setIsStillWorking(!!checked);
+                }}
+              />
+              <label
+                htmlFor="terms"
+                className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Are you still working?
+              </label>
+            </div>
+          )}
+        />
+      </div>
+      {/* <div className="flex w-4/6 flex-col gap-2  lg:w-3/6"></div> */}
+
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
         <div className="flex gap-2">
           <Input
             placeholder="Add a role"
@@ -238,7 +338,21 @@ function ExperianceForm() {
           </p>
         )}
       </div>
-      <Input type="file" onChange={handleImageChange} />
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="companyImage" className="text-muted-foreground">
+          Upload Image
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
+        <Input id="companyImage" type="file" onChange={handleImageChange} />
+        {errors.companyImage && (
+          <p className="text-xs text-red-500 italic">
+            {errors.companyImage.message}
+          </p>
+        )}
+      </div>
+
       {previewUrl && (
         <Image
           src={previewUrl}
@@ -246,27 +360,48 @@ function ExperianceForm() {
           height={200}
           objectFit="cover"
           alt="preview"
-          className="mt-2 h-20 w-20 rounded-md object-cover"
+          className="mt-2 h-64 w-4/6 rounded-md object-cover lg:w-3/6"
         />
       )}
-      <Button
-        type="button"
-        onClick={handleUpload}
-        disabled={isPending || previewUrl.length <= 0}
-      >
-        {isPending ? <Loader2 className="animate-spin" /> : "Upload Image"}
-      </Button>
       <Input
         type="hidden"
         {...register("companyImage")}
         value={watch("companyImage")}
       />
-      {errors.companyImage && (
-        <p className="text-sm text-red-500">{errors.companyImage.message}</p>
-      )}
-      <Button type="submit" disabled={isPending}>
-        {isPending ? <Loader2 className="animate-spin" /> : "Submit"}
-      </Button>
+      <div className="flex w-4/6 gap-2 lg:w-3/6">
+        <Button
+          type="button"
+          className="lg:w-3/ flex w-3/6 cursor-pointer items-center justify-center"
+          onClick={handleUpload}
+          variant="outline"
+          disabled={isPending || previewUrl.length <= 0}
+        >
+          {isPending ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <p className="flex items-center justify-center gap-2">
+              <span>
+                <Upload />
+              </span>
+              Upload Image
+            </p>
+          )}
+        </Button>
+
+        <Button
+          type="submit"
+          disabled={isPending2}
+          className="flex w-3/6 cursor-pointer items-center justify-center lg:w-3/6"
+        >
+          {isPending2 ? (
+            <Loader2 className="animate-spin" />
+          ) : experiance ? (
+            "Update"
+          ) : (
+            "Create"
+          )}
+        </Button>
+      </div>
     </form>
   );
 }

@@ -69,27 +69,18 @@ export const getExperienceById = async (id: string) => {
   }
 };
 
-type UpdateExperienceProps = {
-  id: string;
-  companyName?: string;
-  companyImage?: string;
-  startingDate?: Date;
-  endDate?: Date;
-  stillWorking?: boolean;
-  description?: string;
-  role?: string[];
-};
-
-export const updateExperience = async ({
-  id,
-  companyName,
-  companyImage,
-  startingDate,
-  endDate,
-  stillWorking,
-  description,
-  role,
-}: UpdateExperienceProps) => {
+export const updateExperience = async (
+  id: string,
+  {
+    companyName,
+    companyImage,
+    startingDate,
+    endDate,
+    stillWorking,
+    description,
+    role,
+  }: ExperienceProps,
+) => {
   try {
     const user = await getUser();
     if (!user) throw new Error("Unauthorized");

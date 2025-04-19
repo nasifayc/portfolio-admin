@@ -49,7 +49,7 @@ function ProjectForm({ data, project }: Props) {
     if (project?.imageUrl) {
       setPreviewUrl(project.imageUrl);
     }
-  }, [project]);
+  }, [project?.imageUrl]);
 
   const router = useRouter();
   const {
@@ -143,190 +143,186 @@ function ProjectForm({ data, project }: Props) {
   };
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center justify-start gap-4"
-      >
-        <div className="flex w-4/6 justify-between gap-2 md:w-4/6 lg:w-3/6">
-          <p className="text-lg font-bold lg:text-2xl">
-            {project ? "Update Project" : "Create Project"}
-          </p>
-          <Link href="/admin/project">
-            <Button variant="outline" className="cursor-pointer">
-              Cancel
-            </Button>
-          </Link>
-        </div>
-        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
-          <Label htmlFor="title" className="text-muted-foreground">
-            Project Title
-            <span className="text-red-500">
-              <Asterisk size={10} />
-            </span>
-          </Label>
-          <Input
-            id="title"
-            placeholder="Project title"
-            {...register("title")}
-            className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
-          />
-          {errors.title && (
-            <p className="text-xs text-red-500 italic">
-              {errors.title.message}
-            </p>
-          )}
-        </div>
-        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
-          <Label htmlFor="description" className="text-muted-foreground">
-            Description
-            <span className="text-red-500">
-              <Asterisk size={10} />
-            </span>
-          </Label>
-          <Textarea
-            id="description"
-            placeholder="Description"
-            {...register("description")}
-            className="placeholder:text-muted-foreground w-full resize-none border p-4 focus-visible:ring-0 focus-visible:ring-offset-0"
-          />
-          {errors.description && (
-            <p className="text-xs text-red-500 italic">
-              {errors.description.message}
-            </p>
-          )}
-        </div>
-        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
-          <Label htmlFor="githubLink" className="text-muted-foreground">
-            Github
-            <span className="text-red-500">
-              <Asterisk size={10} />
-            </span>
-          </Label>
-          <Input
-            id="githubLink"
-            placeholder="https://"
-            type="url"
-            {...register("githubLink")}
-            className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
-          />
-          {errors.githubLink && (
-            <p className="text-xs text-red-500 italic">
-              {errors.githubLink.message}
-            </p>
-          )}
-        </div>
-        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
-          <Label htmlFor="githubLink" className="text-muted-foreground">
-            Live Demo
-            <span className="text-red-500">
-              <Asterisk size={10} />
-            </span>
-          </Label>
-          <Input
-            id="liveDemo"
-            placeholder="https://"
-            type="url"
-            {...register("liveDemo")}
-            className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
-          />
-          {errors.liveDemo && (
-            <p className="text-xs text-red-500 italic">
-              {errors.liveDemo.message}
-            </p>
-          )}
-        </div>
-
-        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
-          <Label htmlFor="techStack" className="text-muted-foreground">
-            Teck Stack
-            <span className="text-red-500">
-              <Asterisk size={10} />
-            </span>
-          </Label>
-          <div id="techStack">
-            <MultiSelect
-              className="text-background"
-              options={techStackOptions}
-              value={techStackOptions.filter((option) =>
-                selectedTechStack?.includes(option.value),
-              )}
-              onChange={handleTechStackChange}
-              labelledBy={"Tech Stack"}
-            />
-            {errors.techStack && (
-              <p className="text-xs text-red-500 italic">
-                {errors.techStack.message}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
-          <Label htmlFor="imageUrl" className="text-muted-foreground">
-            Upload Image
-            <span className="text-red-500">
-              <Asterisk size={10} />
-            </span>
-          </Label>
-          <Input id="imageUrl" type="file" onChange={handleImageChange} />
-          {errors.imageUrl && (
-            <p className="text-xs text-red-500 italic">
-              {errors.imageUrl.message}
-            </p>
-          )}
-        </div>
-        {previewUrl && (
-          <Image
-            src={previewUrl}
-            width={200}
-            height={200}
-            objectFit="cover"
-            alt="preview"
-            className="mt-2 h-64 w-4/6 rounded-md object-cover lg:w-3/6"
-          />
-        )}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col items-center justify-start gap-4"
+    >
+      <div className="flex w-4/6 justify-between gap-2 lg:w-3/6">
+        <p className="text-lg font-bold lg:text-2xl">
+          {project ? "Update Project" : "Create Project"}
+        </p>
+        <Link href="/admin/project">
+          <Button variant="outline" className="cursor-pointer">
+            Cancel
+          </Button>
+        </Link>
+      </div>
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="title" className="text-muted-foreground">
+          Project Title
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
         <Input
-          type="hidden"
-          {...register("imageUrl")}
-          value={watch("imageUrl")}
+          id="title"
+          placeholder="Project title"
+          {...register("title")}
+          className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
         />
-        <div className="flex w-4/6 gap-2 md:w-4/6 lg:w-3/6">
-          <Button
-            type="button"
-            className="lg:w-3/ flex w-3/6 cursor-pointer items-center justify-center"
-            onClick={handleUpload}
-            variant="outline"
-            disabled={isPending || previewUrl.length <= 0}
-          >
-            {isPending ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <p className="flex items-center justify-center gap-2">
-                <span>
-                  <Upload />
-                </span>
-                Upload Image
-              </p>
-            )}
-          </Button>
+        {errors.title && (
+          <p className="text-xs text-red-500 italic">{errors.title.message}</p>
+        )}
+      </div>
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="description" className="text-muted-foreground">
+          Description
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
+        <Textarea
+          id="description"
+          placeholder="Description"
+          {...register("description")}
+          className="placeholder:text-muted-foreground w-full resize-none border p-4 focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+        {errors.description && (
+          <p className="text-xs text-red-500 italic">
+            {errors.description.message}
+          </p>
+        )}
+      </div>
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="githubLink" className="text-muted-foreground">
+          Github
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
+        <Input
+          id="githubLink"
+          placeholder="https://"
+          type="url"
+          {...register("githubLink")}
+          className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+        {errors.githubLink && (
+          <p className="text-xs text-red-500 italic">
+            {errors.githubLink.message}
+          </p>
+        )}
+      </div>
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="githubLink" className="text-muted-foreground">
+          Live Demo
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
+        <Input
+          id="liveDemo"
+          placeholder="https://"
+          type="url"
+          {...register("liveDemo")}
+          className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+        {errors.liveDemo && (
+          <p className="text-xs text-red-500 italic">
+            {errors.liveDemo.message}
+          </p>
+        )}
+      </div>
 
-          <Button
-            type="submit"
-            disabled={isPending2}
-            className="flex w-3/6 cursor-pointer items-center justify-center lg:w-3/6"
-          >
-            {isPending2 ? (
-              <Loader2 className="animate-spin" />
-            ) : project ? (
-              "Update"
-            ) : (
-              "Create"
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="techStack" className="text-muted-foreground">
+          Teck Stack
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
+        <div id="techStack">
+          <MultiSelect
+            className="text-background"
+            options={techStackOptions}
+            value={techStackOptions.filter((option) =>
+              selectedTechStack?.includes(option.value),
             )}
-          </Button>
+            onChange={handleTechStackChange}
+            labelledBy={"Tech Stack"}
+          />
+          {errors.techStack && (
+            <p className="text-xs text-red-500 italic">
+              {errors.techStack.message}
+            </p>
+          )}
         </div>
-      </form>
-    </>
+      </div>
+
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="imageUrl" className="text-muted-foreground">
+          Upload Image
+          <span className="text-red-500">
+            <Asterisk size={10} />
+          </span>
+        </Label>
+        <Input id="imageUrl" type="file" onChange={handleImageChange} />
+        {errors.imageUrl && (
+          <p className="text-xs text-red-500 italic">
+            {errors.imageUrl.message}
+          </p>
+        )}
+      </div>
+      {previewUrl && (
+        <Image
+          src={previewUrl}
+          width={200}
+          height={200}
+          objectFit="cover"
+          alt="preview"
+          className="mt-2 h-64 w-4/6 rounded-md object-cover lg:w-3/6"
+        />
+      )}
+      <Input
+        type="hidden"
+        {...register("imageUrl")}
+        value={watch("imageUrl")}
+      />
+      <div className="flex w-4/6 gap-2 lg:w-3/6">
+        <Button
+          type="button"
+          className="lg:w-3/ flex w-3/6 cursor-pointer items-center justify-center"
+          onClick={handleUpload}
+          variant="outline"
+          disabled={isPending || previewUrl.length <= 0}
+        >
+          {isPending ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <p className="flex items-center justify-center gap-2">
+              <span>
+                <Upload />
+              </span>
+              Upload Image
+            </p>
+          )}
+        </Button>
+
+        <Button
+          type="submit"
+          disabled={isPending2}
+          className="flex w-3/6 cursor-pointer items-center justify-center lg:w-3/6"
+        >
+          {isPending2 ? (
+            <Loader2 className="animate-spin" />
+          ) : project ? (
+            "Update"
+          ) : (
+            "Create"
+          )}
+        </Button>
+      </div>
+    </form>
   );
 }
 

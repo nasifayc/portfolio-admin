@@ -28,20 +28,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { deleteExperience } from "@/actions/experiance";
 
+export type ExperienceProps = {
+  id: string;
+  companyName: string;
+  companyImage: string;
+  startingDate: Date;
+  endDate?: Date | null;
+  stillWorking: boolean;
+  description: string;
+  role: string[];
+  updatedAt: Date;
+};
+
 type Props = {
   data: {
     errorMessage: string | null;
-    experiences?: {
-      id: string;
-      companyName: string;
-      companyImage: string;
-      startingDate: Date;
-      endDate?: Date | null;
-      stillWorking: boolean;
-      description: string;
-      role: string[];
-      updatedAt: Date;
-    }[];
+    experiences?: ExperienceProps[];
   };
 };
 function ExperianceList({ data }: Props) {
@@ -172,7 +174,7 @@ function ExperianceList({ data }: Props) {
                   </TableCell> */}
                   <TableCell>
                     {exp.role.map((r) => (
-                      <p>{r}</p>
+                      <p key={r}>{r}</p>
                     ))}
                   </TableCell>
                   <TableCell>{exp.updatedAt.toLocaleDateString()}</TableCell>
@@ -185,10 +187,15 @@ function ExperianceList({ data }: Props) {
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="cursor-pointer">
-                          <span>
-                            <Edit />
-                          </span>
-                          Edit
+                          <Link
+                            href={`/admin/experience/form/${exp.id}`}
+                            className="flex items-center justify-center gap-2"
+                          >
+                            <span>
+                              <Edit />
+                            </span>
+                            Edit
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="cursor-pointer text-red-500"
