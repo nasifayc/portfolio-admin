@@ -24,7 +24,6 @@ type Props = {
 };
 function DeleteProjectButton({ projectId, deleteProjectLocally }: Props) {
   const [isPending, startTransition] = useTransition();
-  //   const router = useRouter();
 
   const handleDeleteProject = () => {
     startTransition(async () => {
@@ -46,9 +45,7 @@ function DeleteProjectButton({ projectId, deleteProjectLocally }: Props) {
             border: "1px solid #388E3C",
           },
         });
-
         deleteProjectLocally(projectId);
-        // router.refresh();
       }
     });
   };
@@ -77,7 +74,7 @@ function DeleteProjectButton({ projectId, deleteProjectLocally }: Props) {
           <AlertDialogAction
             onClick={handleDeleteProject}
             disabled={isPending}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90 w-24"
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90 text-muted w-24"
           >
             {isPending ? <Loader2 className="animate-spin" /> : "Delete"}
           </AlertDialogAction>

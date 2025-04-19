@@ -120,3 +120,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+.multiselect-container {
+  background-color: var(--tw-bg-opacity, theme("colors.background")) !important;
+  color: var(--tw-text-opacity, theme("colors.foreground")) !important;
+  border: 1px solid theme("colors.input");
+  border-radius: 0.5rem;
+}

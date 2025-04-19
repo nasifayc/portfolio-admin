@@ -92,7 +92,7 @@ function ProjectList({ data }: Props) {
         </div>
         <div className="w-full">
           <Link href="project/form">
-            <Button variant="outline" className="h-12 cursor-pointer">
+            <Button variant="outline" className="h-12 cursor-pointer font-bold">
               New Project
             </Button>
           </Link>

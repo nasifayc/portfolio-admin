@@ -11,7 +11,7 @@ export const projectSchema = z.object({
   description: z.string().min(10, "Description is too short"),
   githubLink: z.string().url("Invalid GitHub URL"),
   liveDemo: z.string().url("Invalid live demo URL"),
-  imageUrl: z.string().url("Invalid image URL"),
+  imageUrl: z.string().url("Please upload image first"),
   techStack: z.array(z.string()).min(1, "Select at least one tech"),
 });
 

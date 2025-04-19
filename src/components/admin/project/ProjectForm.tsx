@@ -11,12 +11,14 @@ import { z } from "zod";
 import { MultiSelect } from "react-multi-select-component";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Asterisk, Loader2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { convertBlobUrlToFile } from "@/lib/utils";
 import { deleteImage, uploadImage } from "@/actions/storage";
 import { createProject, updateProject } from "@/actions/project";
 import { ProjectProps } from "./ProjectList";
+import Link from "next/link";
+import { Label } from "@/components/ui/label";
 
 type ProjectFormData = z.infer<typeof projectSchema>;
 
@@ -41,6 +43,7 @@ interface Option {
 function ProjectForm({ data, project }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isPending, startTransition] = useTransition();
+  const [isPending2, startTransition2] = useTransition();
 
   useEffect(() => {
     if (project?.imageUrl) {
@@ -54,6 +57,7 @@ function ProjectForm({ data, project }: Props) {
     handleSubmit,
     setValue,
     watch,
+
     formState: { errors },
   } = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
@@ -120,7 +124,7 @@ function ProjectForm({ data, project }: Props) {
   const selectedTechStack = watch("techStack");
 
   const onSubmit = async (data: ProjectFormData) => {
-    startTransition(async () => {
+    startTransition2(async () => {
       const res = project
         ? await updateProject(project.id, data)
         : await createProject(data);
@@ -139,56 +143,190 @@ function ProjectForm({ data, project }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input placeholder="Project title" {...register("title")} />
-      {errors.title && <p>{errors.title.message}</p>}
-      <Textarea placeholder="Description" {...register("description")} />
-      {errors.description && <p>{errors.description.message}</p>}
-      <Input placeholder="GitHub Link" type="url" {...register("githubLink")} />
-      {errors.githubLink && <p>{errors.githubLink.message}</p>}
-      <Input placeholder="Live Demo URL" type="url" {...register("liveDemo")} />
-      {errors.liveDemo && <p>{errors.liveDemo.message}</p>}
-      <div>
-        <MultiSelect
-          options={techStackOptions}
-          value={techStackOptions.filter((option) =>
-            selectedTechStack?.includes(option.value),
-          )}
-          onChange={handleTechStackChange}
-          labelledBy={"Tech Stack"}
-        />
-        {errors.techStack && <p>{errors.techStack.message}</p>}
-      </div>
-      <Input type="file" onChange={handleImageChange} />
-      {previewUrl && (
-        <Image
-          src={previewUrl}
-          width={200}
-          height={200}
-          objectFit="cover"
-          alt="preview"
-          className="mt-2 h-20 w-20 rounded-md object-cover"
-        />
-      )}
-      <Button
-        type="button"
-        onClick={handleUpload}
-        disabled={isPending || previewUrl.length <= 0}
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col items-center justify-start gap-4"
       >
-        {isPending ? <Loader2 className="animate-spin" /> : "Upload Image"}
-      </Button>
-      <Input
-        type="hidden"
-        {...register("imageUrl")}
-        value={watch("imageUrl")}
-      />
-      {errors.imageUrl && (
-        <p className="text-sm text-red-500">{errors.imageUrl.message}</p>
-      )}
-      <Button type="submit" disabled={isPending}>
-        {isPending ? <Loader2 className="animate-spin" /> : "Submit"}
-      </Button>
-    </form>
+        <div className="flex w-4/6 justify-between gap-2 md:w-4/6 lg:w-3/6">
+          <p className="text-lg font-bold lg:text-2xl">
+            {project ? "Update Project" : "Create Project"}
+          </p>
+          <Link href="/admin/project">
+            <Button variant="outline" className="cursor-pointer">
+              Cancel
+            </Button>
+          </Link>
+        </div>
+        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
+          <Label htmlFor="title" className="text-muted-foreground">
+            Project Title
+            <span className="text-red-500">
+              <Asterisk size={10} />
+            </span>
+          </Label>
+          <Input
+            id="title"
+            placeholder="Project title"
+            {...register("title")}
+            className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+          {errors.title && (
+            <p className="text-xs text-red-500 italic">
+              {errors.title.message}
+            </p>
+          )}
+        </div>
+        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
+          <Label htmlFor="description" className="text-muted-foreground">
+            Description
+            <span className="text-red-500">
+              <Asterisk size={10} />
+            </span>
+          </Label>
+          <Textarea
+            id="description"
+            placeholder="Description"
+            {...register("description")}
+            className="placeholder:text-muted-foreground w-full resize-none border p-4 focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+          {errors.description && (
+            <p className="text-xs text-red-500 italic">
+              {errors.description.message}
+            </p>
+          )}
+        </div>
+        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
+          <Label htmlFor="githubLink" className="text-muted-foreground">
+            Github
+            <span className="text-red-500">
+              <Asterisk size={10} />
+            </span>
+          </Label>
+          <Input
+            id="githubLink"
+            placeholder="https://"
+            type="url"
+            {...register("githubLink")}
+            className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+          {errors.githubLink && (
+            <p className="text-xs text-red-500 italic">
+              {errors.githubLink.message}
+            </p>
+          )}
+        </div>
+        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
+          <Label htmlFor="githubLink" className="text-muted-foreground">
+            Live Demo
+            <span className="text-red-500">
+              <Asterisk size={10} />
+            </span>
+          </Label>
+          <Input
+            id="liveDemo"
+            placeholder="https://"
+            type="url"
+            {...register("liveDemo")}
+            className="placeholder:text-muted-foreground w-full focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+          {errors.liveDemo && (
+            <p className="text-xs text-red-500 italic">
+              {errors.liveDemo.message}
+            </p>
+          )}
+        </div>
+
+        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
+          <Label htmlFor="techStack" className="text-muted-foreground">
+            Teck Stack
+            <span className="text-red-500">
+              <Asterisk size={10} />
+            </span>
+          </Label>
+          <div id="techStack">
+            <MultiSelect
+              className="text-background"
+              options={techStackOptions}
+              value={techStackOptions.filter((option) =>
+                selectedTechStack?.includes(option.value),
+              )}
+              onChange={handleTechStackChange}
+              labelledBy={"Tech Stack"}
+            />
+            {errors.techStack && (
+              <p className="text-xs text-red-500 italic">
+                {errors.techStack.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex w-4/6 flex-col gap-2 md:w-4/6 lg:w-3/6">
+          <Label htmlFor="imageUrl" className="text-muted-foreground">
+            Upload Image
+            <span className="text-red-500">
+              <Asterisk size={10} />
+            </span>
+          </Label>
+          <Input id="imageUrl" type="file" onChange={handleImageChange} />
+          {errors.imageUrl && (
+            <p className="text-xs text-red-500 italic">
+              {errors.imageUrl.message}
+            </p>
+          )}
+        </div>
+        {previewUrl && (
+          <Image
+            src={previewUrl}
+            width={200}
+            height={200}
+            objectFit="cover"
+            alt="preview"
+            className="mt-2 h-64 w-4/6 rounded-md object-cover lg:w-3/6"
+          />
+        )}
+        <Input
+          type="hidden"
+          {...register("imageUrl")}
+          value={watch("imageUrl")}
+        />
+        <div className="flex w-4/6 gap-2 md:w-4/6 lg:w-3/6">
+          <Button
+            type="button"
+            className="lg:w-3/ flex w-3/6 cursor-pointer items-center justify-center"
+            onClick={handleUpload}
+            variant="outline"
+            disabled={isPending || previewUrl.length <= 0}
+          >
+            {isPending ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <p className="flex items-center justify-center gap-2">
+                <span>
+                  <Upload />
+                </span>
+                Upload Image
+              </p>
+            )}
+          </Button>
+
+          <Button
+            type="submit"
+            disabled={isPending2}
+            className="flex w-3/6 cursor-pointer items-center justify-center lg:w-3/6"
+          >
+            {isPending2 ? (
+              <Loader2 className="animate-spin" />
+            ) : project ? (
+              "Update"
+            ) : (
+              "Create"
+            )}
+          </Button>
+        </div>
+      </form>
+    </>
   );
 }
 
