@@ -121,9 +121,15 @@
   }
 }
 
-.multiselect-container {
-  background-color: var(--tw-bg-opacity, theme("colors.background")) !important;
-  color: var(--tw-text-opacity, theme("colors.foreground")) !important;
-  border: 1px solid theme("colors.input");
-  border-radius: 0.5rem;
+/* globals.css */
+html {
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
+}
+
+body {
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
 }

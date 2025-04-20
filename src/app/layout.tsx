@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import "@/styles/global.css";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Toaster } from "sonner";
+import { Roboto, Poppins, Lora } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Nasifay Portfolio",
@@ -14,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={poppins.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

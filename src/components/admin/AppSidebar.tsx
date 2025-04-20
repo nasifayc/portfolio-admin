@@ -13,6 +13,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { appbarItems } from "@/lib/constants";
+
 import Link from "next/link";
 import { useState } from "react";
 
@@ -24,7 +25,9 @@ export function AppSidebar() {
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup className="relative">
-          <SidebarGroupLabel>Manage Portfolio</SidebarGroupLabel>
+          <SidebarGroupLabel>
+            <h1 className="text-xl font-bold">Dashboared</h1>
+          </SidebarGroupLabel>
 
           <SidebarGroupContent className="pt-8">
             <SidebarMenu className="flex flex-col gap-2">
@@ -32,10 +35,10 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className={`text-muted-foreground ${currBar === index ? "bg-muted" : ""}`}
+                    className={` ${currBar === index ? "bg-muted" : ""}`}
                     onClick={() => setCurrBar(index)}
                   >
-                    <Link href={`/admin${item.url}`}>
+                    <Link className="" href={`/admin${item.url}`}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>

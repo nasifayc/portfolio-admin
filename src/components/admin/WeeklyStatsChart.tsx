@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { format } from "date-fns";
 
 // Dynamically import ApexChart to avoid SSR issues
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -24,7 +25,9 @@ interface WeeklyStatsChartProps {
 }
 
 function WeeklyStatsChart({ data }: WeeklyStatsChartProps) {
-  const categories = data.map((item) => item.date);
+  const categories = data.map((item) =>
+    format(new Date(item.date), "MMM d, yyyy"),
+  );
 
   const chartOptions: ApexOptions = {
     chart: {
@@ -76,13 +79,13 @@ function WeeklyStatsChart({ data }: WeeklyStatsChartProps) {
   ];
 
   return (
-    <Card className="mt-8">
+    <Card className="basis-full rounded-sm md:basis-2/5 lg:basis-3/6 xl:basis-3/6">
       <CardHeader>
-        <CardTitle>Title</CardTitle>
-        <CardDescription>Description</CardDescription>
+        <CardTitle className="text-xl">Weekly Activity</CardTitle>
+        <CardDescription>Last 7 days</CardDescription>
       </CardHeader>
       <CardContent>
-        <h2 className="mb-4 text-xl font-semibold">📊 Weekly Activity</h2>
+        {/* <h2 className="mb-4 text-xl font-semibold">📊 Weekly Activity</h2> */}
         <ApexChart
           options={chartOptions}
           series={series}

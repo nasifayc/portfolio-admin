@@ -6,6 +6,7 @@ export const getDashboardStats = async () => {
   try {
     const totalProjects = await prisma.project.count();
     const totalTechStacks = await prisma.techStack.count();
+    const totalExp = await prisma.experience.count();
 
     const projectsByTagRaw = await prisma.techStack.findMany({
       select: {
@@ -46,6 +47,7 @@ export const getDashboardStats = async () => {
       errorMessage: null,
       totalProjects,
       totalTechStacks,
+      totalExp,
       projectsByTag,
       currentRoles,
       totalExperienceMonths,
@@ -56,6 +58,7 @@ export const getDashboardStats = async () => {
       errorMessage: "Error fetching dashboard stats",
       totalProjects: null,
       totalTechStacks: null,
+      totalExp: null,
       projectsByTag: null,
       currentRoles: null,
       totalExperienceMonths: null,
