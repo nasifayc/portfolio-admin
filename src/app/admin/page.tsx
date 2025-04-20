@@ -1,26 +1,22 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { getDashboardStats, getWeeklyStats } from "@/actions/overview";
+import Overview from "@/components/admin/Overview";
+import WeeklyStatsChart from "@/components/admin/WeeklyStatsChart";
 
-function AdminPage() {
+async function AdminPage() {
+  const stats = await getDashboardStats();
+  const weeklyStats = await getWeeklyStats();
+  if (stats.errorMessage) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-3xl font-bold">{stats.errorMessage}</p>
+      </div>
+    );
+  }
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p>Card Content</p>
-      </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter>
-    </Card>
+    <div className="space-y-6">
+      <Overview stats={stats} />
+      <WeeklyStatsChart data={weeklyStats} />
+    </div>
   );
 }
 

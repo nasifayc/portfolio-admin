@@ -3,18 +3,12 @@
 import { getUser } from "@/auth/server";
 import { prisma } from "@/db/prisma";
 import { handleError } from "@/lib/utils";
+import { deleteImage } from "./storage";
 
 type TechstackProps = {
   name: string;
   imageUrl: string;
   tag: "frontend" | "backend" | "mobile" | "DevOps" | "baas" | "saas";
-};
-
-type UpdateTechstackProps = {
-  id: string;
-  name?: string;
-  imageUrl?: string;
-  tag?: "frontend" | "backend" | "mobile" | "DevOps" | "baas" | "saas";
 };
 
 export const createSkill = async ({ name, imageUrl, tag }: TechstackProps) => {
@@ -55,17 +49,16 @@ export const getSkillById = async (id: string) => {
     });
 
     if (!skill) throw new Error("No such skill");
+    return { skill };
   } catch (e) {
-    return handleError(e);
+    return { skill: undefined };
   }
 };
 
-export const updateSkill = async ({
-  id,
-  name,
-  imageUrl,
-  tag,
-}: UpdateTechstackProps) => {
+export const updateSkill = async (
+  id: string,
+  { name, imageUrl, tag }: TechstackProps,
+) => {
   try {
     const user = await getUser();
     if (!user) throw new Error("Unauthorised");
@@ -84,6 +77,12 @@ export const deleteSkill = async (id: string) => {
   try {
     const user = await getUser();
     if (!user) throw new Error("Unauthorised");
+    const { skill } = await getSkillById(id);
+    if (!skill) throw new Error("No such skill");
+    if (skill.imageUrl) {
+      const { error } = await deleteImage(skill.imageUrl);
+      if (error) throw new Error("Failed to delete image");
+    }
     await prisma.techStack.delete({ where: { id } });
 
     return { errorMessage: null };
@@ -91,11 +90,3 @@ export const deleteSkill = async (id: string) => {
     return handleError(e);
   }
 };
-
-// export const uploadImage = async (file: File) => {
-//   try {
-//     const {} = await su;
-//   } catch (e) {
-//     handleError(e);
-//   }
-// };

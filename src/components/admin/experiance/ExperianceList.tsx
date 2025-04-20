@@ -202,7 +202,7 @@ function ExperianceList({ data }: Props) {
                           onClick={() => {
                             if (
                               window.confirm(
-                                "Are you sure you want to delete this experience?",
+                                `Are you sure you want to delete ${exp.companyName}`,
                               )
                             ) {
                               handleDeleteExp(exp.id);
