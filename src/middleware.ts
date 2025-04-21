@@ -14,7 +14,6 @@ export const config = {
 const protectedRoutes = ["/admin"];
 
 export async function updateSession(request: NextRequest) {
-  console.log("Middleware Running...");
   let supabaseResponse = NextResponse.next({
     request,
   });

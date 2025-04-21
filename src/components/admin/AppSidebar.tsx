@@ -10,9 +10,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { appbarItems } from "@/lib/constants";
+import { analyticsAppbarItems, generalAppbarItems } from "@/lib/constants";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -31,12 +30,31 @@ export function AppSidebar() {
 
           <SidebarGroupContent className="pt-8">
             <SidebarMenu className="flex flex-col gap-2">
-              {appbarItems.map((item, index) => (
-                <SidebarMenuItem key={item.title}>
+              <p className="text-muted-foreground pl-2">General</p>
+              {generalAppbarItems.map((item, index) => (
+                <SidebarMenuItem className="pl-4" key={item.title}>
                   <SidebarMenuButton
                     asChild
                     className={` ${currBar === index ? "bg-muted" : ""}`}
                     onClick={() => setCurrBar(index)}
+                  >
+                    <Link className="" href={`/admin${item.url}`}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+
+              <p className="text-muted-foreground pt-2 pl-2">Analytics</p>
+              {analyticsAppbarItems.map((item, index) => (
+                <SidebarMenuItem className="pl-4" key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    className={` ${currBar === generalAppbarItems.length + index ? "bg-muted" : ""}`}
+                    onClick={() =>
+                      setCurrBar(generalAppbarItems.length + index)
+                    }
                   >
                     <Link className="" href={`/admin${item.url}`}>
                       <item.icon />

@@ -1,9 +1,15 @@
+"use client";
 import { ModeToggle } from "@/components/shared/DarkModeToggler";
-import React from "react";
+import { useEffect } from "react";
 
 function HomePage() {
+  useEffect(() => {
+    fetch("/api/track", {
+      method: "POST",
+    });
+  }, []);
   return (
-    <div>
+    <div className="h-full">
       <p>Home Page</p>
       <ModeToggle />
     </div>

@@ -7,6 +7,14 @@ export const getDashboardStats = async () => {
     const totalProjects = await prisma.project.count();
     const totalTechStacks = await prisma.techStack.count();
     const totalExp = await prisma.experience.count();
+    const totalVisits = await prisma.visit.count();
+    // const totalVisitsToday = await prisma.visit.count({
+    //   where: {
+    //     createdAt: {
+    //       gte: new Date(new Date().setHours(0, 0, 0, 0)),
+    //     },
+    //   },
+    // });
 
     const projectsByTagRaw = await prisma.techStack.findMany({
       select: {
@@ -48,6 +56,7 @@ export const getDashboardStats = async () => {
       totalProjects,
       totalTechStacks,
       totalExp,
+      totalVisits,
       projectsByTag,
       currentRoles,
       totalExperienceMonths,
@@ -59,6 +68,7 @@ export const getDashboardStats = async () => {
       totalProjects: null,
       totalTechStacks: null,
       totalExp: null,
+      totalVisits: null,
       projectsByTag: null,
       currentRoles: null,
       totalExperienceMonths: null,

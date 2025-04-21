@@ -1,5 +1,11 @@
 "use client";
-import { Activity, BrainCircuit, FolderArchive, Timer } from "lucide-react";
+import {
+  Activity,
+  BrainCircuit,
+  FolderArchive,
+  Timer,
+  View,
+} from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import dynamic from "next/dynamic";
 
@@ -12,6 +18,7 @@ type Props = {
   stats: {
     totalProjects: number | null;
     totalTechStacks: number | null;
+    totalVisits: number | null;
     projectsByTag: Record<string, number> | null;
     currentRoles: number | null;
     totalExperienceMonths: number | null;
@@ -77,6 +84,19 @@ function Overview({ stats }: Props) {
               </div>
               <h1 className="text-muted-foreground">Currently working </h1>
               <p className="text-2xl font-extrabold">{stats.currentRoles}</p>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-xs p-0">
+            <CardContent className="flex flex-col gap-2 p-4">
+              <div className="flex items-center gap-2">
+                <div className="bg-muted inline-block rounded-sm p-2">
+                  <View className="text-shadow-blue-300" size={30} />
+                </div>
+                <h3 className="text-xl font-semibold">View </h3>
+              </div>
+              <h1 className="text-muted-foreground">Portfolio views </h1>
+              <p className="text-2xl font-extrabold">{stats.totalVisits}</p>
             </CardContent>
           </Card>
         </div>

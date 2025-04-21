@@ -13,13 +13,13 @@ async function AdminPage() {
   const weeklyStats = await getWeeklyStats();
   if (stats.errorMessage) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex h-full items-center justify-center">
         <p className="text-3xl font-bold">{stats.errorMessage}</p>
       </div>
     );
   }
   return (
-    <div className="flex flex-col gap-16">
+    <div className="flex h-full flex-col gap-16">
       <div className="flex flex-col gap-4">
         <h3 className="text-muted-foreground text-xl font-medium">Analytics</h3>
         <div className="flex flex-wrap items-start gap-4">

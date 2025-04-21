@@ -3,9 +3,10 @@ import {
   FolderKanban,
   Briefcase,
   BrainCircuit,
+  Eye,
 } from "lucide-react";
 
-export const appbarItems = [
+export const generalAppbarItems = [
   {
     title: "Overview",
     url: "/",
@@ -26,5 +27,13 @@ export const appbarItems = [
     title: "Skills",
     url: "/skills",
     icon: BrainCircuit,
+  },
+];
+
+export const analyticsAppbarItems = [
+  {
+    title: "Visit History",
+    url: "/visit",
+    icon: Eye,
   },
 ];
