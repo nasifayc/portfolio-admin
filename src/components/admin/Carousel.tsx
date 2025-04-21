@@ -18,6 +18,14 @@ import {
 type Props = {
   projectsByTag: Record<string, number>;
 };
+const tagIcons = {
+  mobile: Smartphone,
+  frontend: Laptop,
+  backend: Database,
+  saas: Network,
+  baas: DatabaseBackup,
+  default: Server,
+};
 
 function CarouselSection({ projectsByTag }: Props) {
   return (
@@ -32,31 +40,7 @@ function CarouselSection({ projectsByTag }: Props) {
               key={tag}
               className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
             >
-              <Card className="h-40 cursor-pointer rounded-sm p-0">
-                <CardContent className="flex flex-col items-start gap-4 p-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="bg-muted inline-block rounded-sm p-2">
-                      {tag === "mobile" ? (
-                        <Smartphone size={20} />
-                      ) : tag === "frontend" ? (
-                        <Laptop size={20} />
-                      ) : tag === "backend" ? (
-                        <Database size={20} />
-                      ) : tag === "saas" ? (
-                        <Network />
-                      ) : tag === "baas" ? (
-                        <DatabaseBackup />
-                      ) : (
-                        <Server size={20} />
-                      )}
-                    </div>
-
-                    <h3 className="text-lg capitalize">{tag}</h3>
-                  </div>
-
-                  <p className="self-center text-2xl font-extrabold">{count}</p>
-                </CardContent>
-              </Card>
+              <TagCard tag={tag} count={count} />
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -64,6 +48,24 @@ function CarouselSection({ projectsByTag }: Props) {
         <CarouselNext />
       </Carousel>
     </div>
+  );
+}
+
+function TagCard({ tag, count }: { tag: string; count: number }) {
+  const Icon = tagIcons[tag as keyof typeof tagIcons] || tagIcons.default;
+
+  return (
+    <Card className="h-40 cursor-pointer rounded-sm p-0">
+      <CardContent className="flex flex-col items-start gap-4 p-4">
+        <div className="flex w-full items-start justify-between gap-2">
+          <div className="bg-muted inline-block rounded-sm p-2">
+            <Icon size={20} />
+          </div>
+          <h3 className="text-lg capitalize">{tag}</h3>
+        </div>
+        <p className="self-center text-2xl font-extrabold">{count}</p>
+      </CardContent>
+    </Card>
   );
 }
 

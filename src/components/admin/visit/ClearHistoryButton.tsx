@@ -59,9 +59,7 @@ function ClearHistoryButton({ clearHistoryLocally }: Props) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            Are you sure you want to clear visit history?
-          </AlertDialogTitle>
+          <AlertDialogTitle>Clear History?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently clear your
             portfolio visit history from our servers.

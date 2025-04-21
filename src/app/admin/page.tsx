@@ -1,7 +1,28 @@
 import { getDashboardStats, getWeeklyStats } from "@/actions/overview";
-import GeneralPieChart from "@/components/admin/GeneralPieChart";
-import Overview from "@/components/admin/Overview";
-import WeeklyStatsChart from "@/components/admin/WeeklyStatsChart";
+import DashboardLoading from "@/components/shared/loading/SkeletonLoading";
+import { Loader2 } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const Overview = dynamic(() => import("@/components/admin/Overview"), {
+  loading: () => <Loader2 className="animate-spin" />,
+  ssr: true,
+});
+
+const WeeklyStatsChart = dynamic(
+  () => import("@/components/admin/WeeklyStatsChart"),
+  {
+    loading: () => <Loader2 className="animate-spin" />,
+    ssr: true,
+  },
+);
+
+const GeneralPieChart = dynamic(
+  () => import("@/components/admin/GeneralPieChart"),
+  {
+    loading: () => <Loader2 className="animate-spin" />,
+    ssr: true,
+  },
+);
 
 async function AdminPage() {
   const stats = await getDashboardStats();
@@ -20,6 +41,7 @@ async function AdminPage() {
   }
   return (
     <div className="flex h-full flex-col gap-16">
+      <Overview stats={stats} />
       <div className="flex flex-col gap-4">
         <h3 className="text-muted-foreground text-xl font-medium">Analytics</h3>
         <div className="flex flex-wrap items-start gap-4">
@@ -27,8 +49,6 @@ async function AdminPage() {
           <GeneralPieChart count={count} />
         </div>
       </div>
-
-      <Overview stats={stats} />
     </div>
   );
 }

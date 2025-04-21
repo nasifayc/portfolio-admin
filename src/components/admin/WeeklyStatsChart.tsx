@@ -10,7 +10,6 @@ import {
 } from "../ui/card";
 import { format } from "date-fns";
 
-// Dynamically import ApexChart to avoid SSR issues
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 type WeeklyStats = {
@@ -85,7 +84,6 @@ function WeeklyStatsChart({ data }: WeeklyStatsChartProps) {
         <CardDescription>Last 7 days</CardDescription>
       </CardHeader>
       <CardContent>
-        {/* <h2 className="mb-4 text-xl font-semibold">📊 Weekly Activity</h2> */}
         <ApexChart
           options={chartOptions}
           series={series}

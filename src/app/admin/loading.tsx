@@ -1,8 +1,7 @@
-import Loading from "@/components/shared/Loading";
-import { Loader2 } from "lucide-react";
+import SkeletonLoading from "@/components/shared/loading/SkeletonLoading";
 
 function loading() {
-  return <Loading />;
+  return <SkeletonLoading />;
 }
 
 export default loading;
