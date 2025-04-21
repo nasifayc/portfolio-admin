@@ -97,7 +97,13 @@ function ExperianceForm({ experiance }: Props) {
   const handleUpload = async () => {
     startTransition(async () => {
       if (!previewUrl) {
-        toast.error("Please select an image first.");
+        toast.error("Please select an image first.", {
+          style: {
+            backgroundColor: "#F44336",
+            color: "white",
+            border: "1px solid #D32F2F",
+          },
+        });
         return;
       }
 
@@ -106,7 +112,13 @@ function ExperianceForm({ experiance }: Props) {
       if (experiance) {
         const { error } = await deleteImage(experiance.companyImage);
         if (error) {
-          toast.error("Failed to delete old image.");
+          toast.error("Failed to delete old image.", {
+            style: {
+              backgroundColor: "#F44336",
+              color: "white",
+              border: "1px solid #D32F2F",
+            },
+          });
           return;
         }
       }
@@ -116,13 +128,25 @@ function ExperianceForm({ experiance }: Props) {
       });
 
       if (error || !imageUrl) {
-        toast.error("Upload failed");
+        toast.error("Upload failed", {
+          style: {
+            backgroundColor: "#F44336",
+            color: "white",
+            border: "1px solid #D32F2F",
+          },
+        });
         return;
       }
 
       setValue("companyImage", imageUrl);
       setPreviewUrl("");
-      toast.success("Image uploaded!");
+      toast.success("Image uploaded!", {
+        style: {
+          backgroundColor: "#4CAF50",
+          color: "white",
+          border: "1px solid #388E3C",
+        },
+      });
     });
   };
 

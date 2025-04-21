@@ -65,9 +65,20 @@ function TechStackForm({ skill }: Props) {
       if (res.errorMessage) {
         toast.error("Something went wrong!", {
           description: res.errorMessage,
+          style: {
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "1px solid #388E3C",
+          },
         });
       } else {
-        toast.success(`Skill ${skill ? "updated" : "created"} successfully!`);
+        toast.success(`Skill ${skill ? "updated" : "created"} successfully!`, {
+          style: {
+            backgroundColor: "#F44336",
+            color: "white",
+            border: "1px solid #D32F2F",
+          },
+        });
         router.replace("/admin/skills");
       }
     });
@@ -83,7 +94,13 @@ function TechStackForm({ skill }: Props) {
   const handleUpload = async () => {
     startTransition(async () => {
       if (!previewUrl) {
-        toast.error("Please select an image first.");
+        toast.error("Please select an image first.", {
+          style: {
+            backgroundColor: "#F44336",
+            color: "white",
+            border: "1px solid #D32F2F",
+          },
+        });
         return;
       }
 
@@ -92,7 +109,13 @@ function TechStackForm({ skill }: Props) {
       if (skill) {
         const { error } = await deleteImage(skill.imageUrl);
         if (error) {
-          toast.error("Failed to delete old image.");
+          toast.error("Failed to delete old image.", {
+            style: {
+              backgroundColor: "#F44336",
+              color: "white",
+              border: "1px solid #D32F2F",
+            },
+          });
           return;
         }
       }
@@ -102,13 +125,25 @@ function TechStackForm({ skill }: Props) {
       });
 
       if (error || !imageUrl) {
-        toast.error("Upload failed");
+        toast.error("Upload failed", {
+          style: {
+            backgroundColor: "#F44336",
+            color: "white",
+            border: "1px solid #D32F2F",
+          },
+        });
         return;
       }
 
       setValue("imageUrl", imageUrl);
       setPreviewUrl("");
-      toast.success("Image uploaded!");
+      toast.success("Image uploaded!", {
+        style: {
+          backgroundColor: "#4CAF50",
+          color: "white",
+          border: "1px solid #388E3C",
+        },
+      });
     });
   };
 

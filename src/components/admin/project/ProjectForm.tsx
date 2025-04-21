@@ -94,7 +94,13 @@ function ProjectForm({ data, project }: Props) {
       if (project) {
         const { data, error } = await deleteImage(project.imageUrl);
         if (error) {
-          toast.error("Failed to delete old image");
+          toast.error("Failed to delete old image", {
+            style: {
+              backgroundColor: "#F44336",
+              color: "white",
+              border: "1px solid #D32F2F",
+            },
+          });
           return;
         }
       }
@@ -104,7 +110,13 @@ function ProjectForm({ data, project }: Props) {
       });
 
       if (error || !imageUrl) {
-        toast.error("Upload failed");
+        toast.error("Upload failed", {
+          style: {
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "1px solid #388E3C",
+          },
+        });
         return;
       }
 
