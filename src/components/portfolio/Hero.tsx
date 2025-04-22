@@ -26,7 +26,7 @@ function Hero() {
               <Typewriter
                 words={[
                   "Full Stack Developer",
-                  "Flutter Developer",
+                  "Flutter Expert",
                   "Backend Developer",
                 ]}
                 loop={0}

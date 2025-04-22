@@ -2,6 +2,7 @@ import About from "./About";
 import NavigationHeader from "./header/PHearder";
 import PSkill from "./PSkill";
 import Hero from "./Hero";
+import WorkExperience from "./WorkExp";
 
 function Landing() {
   return (
@@ -13,7 +14,9 @@ function Landing() {
         <About />
         {/* Skills Section */}
         <PSkill />
+        <WorkExperience />
         {/* Projects Section */}
+
         <section className="py-12">
           <h2 className="mb-8 text-center text-3xl font-bold">
             Featured Projects

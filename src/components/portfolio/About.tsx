@@ -20,8 +20,10 @@ function About() {
           <p className="text-muted-foreground">
             I am intermidiate full stack developer who enjoys building scalable,
             high-performance applications that deliver real value. I care deeply
-            about clean architecture, the TypeScript ecosystem, and creating
-            experiences that leave clients and companies genuinely satisfied.
+            about clean architecture,{" "}
+            <span className="text-amber-500">Dart and TypeScript</span>{" "}
+            ecosystem, and creating experiences that leave clients and companies
+            genuinely satisfied.
           </p>
         </div>
       </motion.div>
