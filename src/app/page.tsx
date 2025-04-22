@@ -1,19 +1,7 @@
-"use client";
-import { ModeToggle } from "@/components/shared/DarkModeToggler";
-import { useEffect } from "react";
+import Landing from "@/components/portfolio/Landing";
 
 function HomePage() {
-  useEffect(() => {
-    fetch("/api/track", {
-      method: "POST",
-    });
-  }, []);
-  return (
-    <div className="h-full">
-      <p>Home Page</p>
-      <ModeToggle />
-    </div>
-  );
+  return <Landing />;
 }
 
 export default HomePage;
