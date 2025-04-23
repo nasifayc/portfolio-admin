@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
-import { Loader2 } from "lucide-react";
 
 function Hero() {
   return (

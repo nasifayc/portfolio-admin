@@ -92,7 +92,7 @@ function ProjectForm({ data, project }: Props) {
 
       const file = await convertBlobUrlToFile(previewUrl);
       if (project) {
-        const { data, error } = await deleteImage(project.imageUrl);
+        const { error } = await deleteImage(project.imageUrl);
         if (error) {
           toast.error("Failed to delete old image", {
             style: {

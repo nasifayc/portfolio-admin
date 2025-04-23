@@ -1,8 +1,12 @@
 import { getExperiences } from "@/actions/experiance";
-import WorkExpCard from "./WorkExpCard";
+import dynamic from "next/dynamic";
+const WorkExpCard = dynamic(() => import("./WorkExpCard"));
 
 async function WorkExp() {
   const response = await getExperiences();
+  if (response.errorMessage) {
+    return <h1>No Work Experience</h1>;
+  }
   return <WorkExpCard data={response} />;
 }
 

@@ -55,8 +55,6 @@ function ProjectList({ data }: Props) {
       });
     }
   }, [data.errorMessage]);
-  if (data.errorMessage) return null;
-
   useEffect(() => {
     setLocalProjects(data.projects ?? []);
   }, [data.projects]);
@@ -67,6 +65,7 @@ function ProjectList({ data }: Props) {
       threshold: 0.4,
     });
   }, [localProjects]);
+  if (data.errorMessage) return null;
 
   const filteredProjects = searchProject
     ? fuse.search(searchProject).map((result) => result.item)

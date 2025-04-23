@@ -14,16 +14,6 @@ type ProjectProps = {
   techStack: string[];
 };
 
-// type UpdateProjectProps = {
-//   id: string;
-//   title?: string;
-//   description?: string;
-//   githubLink?: string;
-//   liveDemo?: string;
-//   imageUrl?: string;
-//   techStack?: string[];
-// };
-
 export const createProject = async ({
   title,
   description,
@@ -75,7 +65,7 @@ export const getProjectById = async (projectId: string) => {
 
     if (!project) throw new Error("Project not found");
     return { project };
-  } catch (e) {
+  } catch {
     return { project: undefined };
   }
 };

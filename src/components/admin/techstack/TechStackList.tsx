@@ -59,9 +59,6 @@ function TechStackList({ data }: Props) {
       });
     }
   }, [data.errorMessage]);
-
-  if (data.errorMessage) return null;
-
   useEffect(() => {
     setLocalSkills(data.skills ?? []);
   }, [data.skills]);
@@ -73,11 +70,14 @@ function TechStackList({ data }: Props) {
     });
   }, [localSkills]);
 
+  if (data.errorMessage) return null;
+
   const filteredSkills = searchSkill
     ? fuse.search(searchSkill).map((result) => result.item)
     : localSkills;
 
   const deleteSkillLocally = (skillId: string) => {
+    console.log(isPending);
     setLocalSkills((prev) => prev.filter((skill) => skill.id !== skillId));
   };
 

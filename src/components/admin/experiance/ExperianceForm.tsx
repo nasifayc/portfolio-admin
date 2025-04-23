@@ -329,7 +329,6 @@ function ExperianceForm({ experiance }: Props) {
           )}
         />
       </div>
-      {/* <div className="flex w-4/6 flex-col gap-2  lg:w-3/6"></div> */}
 
       <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
         <div className="flex gap-2">
@@ -345,7 +344,10 @@ function ExperianceForm({ experiance }: Props) {
 
         <div className="flex flex-wrap gap-2">
           {roles.map((role, index) => (
-            <div className="bg-accent flex items-center gap-2 rounded-md border p-2">
+            <div
+              key={role}
+              className="bg-accent flex items-center gap-2 rounded-md border p-2"
+            >
               <p key={index}>{role}</p>
               <X
                 size={14}

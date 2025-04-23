@@ -37,7 +37,7 @@ function Education() {
               </span>
             </div>
           </div>
-          <span>2021-2026</span>
+          <span className="text-muted-foreground">2021 - 2026</span>
         </div>
       </motion.div>
     </section>

@@ -33,12 +33,11 @@ function WorkExpCard({ data }: Props) {
       });
     }
   }, [data.errorMessage]);
-
-  if (data.errorMessage) return null;
-
   useEffect(() => {
     setLocalExperiences(data.experiences ?? []);
   }, [data.experiences]);
+
+  if (data.errorMessage) return null;
 
   return (
     <section ref={sectionRef} className="flex flex-col items-start">

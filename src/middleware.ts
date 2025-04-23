@@ -11,8 +11,6 @@ export const config = {
   ],
 };
 
-const protectedRoutes = ["/admin"];
-
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,

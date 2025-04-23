@@ -15,9 +15,7 @@ function Landing() {
       <NavigationHeader />
       <main className="flex flex-col gap-12 pt-30">
         <Hero />
-
         <About />
-
         <PSkill />
         <WorkExperience />
         <Education />

@@ -1,7 +1,6 @@
 "use client";
 
 import { signInWithGoogle } from "@/actions/user";
-import { createClient } from "@/auth/server";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,12 +11,10 @@ import {
 } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
 function LoginPage() {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const handleLogin = () => {
     startTransition(async () => {

@@ -1,43 +1,43 @@
 "use client";
-import { Github, Linkedin, Twitter, Instagram, Mail, Send } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, Send } from "lucide-react";
 
 import { motion, useInView } from "framer-motion";
 
 import { ElementType, useRef } from "react";
+const SOCIAL_ITEMS = [
+  {
+    name: "Telegram",
+    link: "https://t.me/Nasi_c",
+    icon: Send,
+    color: "text-sky-400",
+  },
+  {
+    name: "Email",
+    link: "mailto:nasifayc11@gmail.com",
+    icon: Mail,
+    color: "text-red-400",
+  },
+  {
+    name: "GitHub",
+    link: "https://github.com/nasifayc",
+    icon: Github,
+    color: "text-green-400",
+  },
+  {
+    name: "LinkedIn",
+    link: "https://www.linkedin.com/in/nasifay-chala-810844282?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B%2F0Kvo4f0R6uNAVEzDGahMg%3D%3D",
+    icon: Linkedin,
+    color: "text-blue-400",
+  },
+  {
+    name: "Twitter",
+    link: "https://twitter.com/nasifay_c",
+    icon: Twitter,
+    color: "text-blue-400",
+  },
+];
 
 function ContactSection() {
-  const SOCIAL_ITEMS = [
-    {
-      name: "Telegram",
-      link: "https://t.me/Nasi_c",
-      icon: Send,
-      color: "text-sky-400",
-    },
-    {
-      name: "Email",
-      link: "mailto:nasifayc11@gmail.com",
-      icon: Mail,
-      color: "text-red-400",
-    },
-    {
-      name: "GitHub",
-      link: "https://github.com/nasifayc",
-      icon: Github,
-      color: "text-green-400",
-    },
-    {
-      name: "LinkedIn",
-      link: "https://www.linkedin.com/in/nasifay-chala-810844282?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B%2F0Kvo4f0R6uNAVEzDGahMg%3D%3D",
-      icon: Linkedin,
-      color: "text-blue-400",
-    },
-    {
-      name: "Twitter",
-      link: "https://twitter.com/nasifay_c",
-      icon: Twitter,
-      color: "text-blue-400",
-    },
-  ];
   const secRef = useRef(null);
   const isInView = useInView(secRef, { once: true, amount: 0.3 });
   return (

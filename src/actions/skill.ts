@@ -50,7 +50,7 @@ export const getSkillById = async (id: string) => {
 
     if (!skill) throw new Error("No such skill");
     return { skill };
-  } catch (e) {
+  } catch {
     return { skill: undefined };
   }
 };

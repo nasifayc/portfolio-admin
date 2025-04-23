@@ -64,7 +64,7 @@ export const getExperienceById = async (id: string) => {
     if (!experience) throw new Error("Experience not found");
 
     return { experience };
-  } catch (e) {
+  } catch {
     return { experience: undefined };
   }
 };

@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
-import { motion, useMotionValue, animate } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Home,
-  TypeOutline,
   Github,
   Linkedin,
   Send,
@@ -16,7 +15,7 @@ import {
   Twitter,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -64,10 +63,11 @@ function NavigationHeader() {
       fetch("/api/track", { method: "POST" });
     }
   }, []);
+
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
-  const [isContainerHovered, setIsContainerHovered] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const toggleTheme = () => {
@@ -76,35 +76,24 @@ function NavigationHeader() {
 
   return (
     <motion.nav
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      initial={{ opacity: 0, x: 60 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
       className="fixed top-6 left-1/2 z-50 -translate-x-1/2 transform bg-transparent"
     >
       <motion.div
         ref={containerRef}
-        onMouseEnter={() => setIsContainerHovered(true)}
-        onMouseLeave={() => setIsContainerHovered(false)}
-        animate={{
-          gap: isContainerHovered ? "0.75rem" : "0.1rem",
-        }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className="dark:bg-background/40 relative flex items-center justify-center rounded-full border px-3 py-2 shadow-sm backdrop-blur-sm"
+        className="dark:bg-background/40 group/item relative flex items-center rounded-full border px-3 py-2 shadow-sm backdrop-blur-sm transition-all duration-300"
       >
         {NAV_ITEMS.map((item, index) => (
           <div
             key={item.name}
-            className="flex items-center bg-transparent"
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
+            className="flex items-center bg-transparent transition-all duration-300 group-hover/item:px-1"
           >
             <motion.div
-              animate={{
-                paddingLeft: hoveredIndex === index ? "0.75rem" : "0.1rem",
-                paddingRight: hoveredIndex === index ? "0.75rem" : "0.1rem",
-              }}
-              whileHover={{ scale: 1.4 }}
               transition={{ type: "spring", stiffness: 100, damping: 10 }}
+              className="transition-all duration-300 hover:scale-125"
             >
               <NavItem
                 href={item.href}
@@ -123,23 +112,23 @@ function NavigationHeader() {
         <div className="bg-muted-foreground mx-1 h-6 w-px rounded-full"></div>
 
         <div
-          onMouseEnter={() => setHoveredIndex(NAV_ITEMS.length)}
-          onMouseLeave={() => setHoveredIndex(null)}
+        // onMouseEnter={() => setHoveredIndex(NAV_ITEMS.length)}
+        // onMouseLeave={() => setHoveredIndex(null)}
         >
           <motion.div
-            animate={{
-              paddingLeft:
-                hoveredIndex === NAV_ITEMS.length ? "0.75rem" : "0.5rem",
-              paddingRight:
-                hoveredIndex === NAV_ITEMS.length ? "0.75rem" : "0.5rem",
-            }}
+            // animate={{
+            //   paddingLeft:
+            //     hoveredIndex === NAV_ITEMS.length ? "0.75rem" : "0.5rem",
+            //   paddingRight:
+            //     hoveredIndex === NAV_ITEMS.length ? "0.75rem" : "0.5rem",
+            // }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="hover:bg-accent relative cursor-pointer rounded-full"
+              className="relative cursor-pointer rounded-full transition-all duration-300 hover:scale-125"
               aria-label="Toggle theme"
             >
               <Sun className="h-4 w-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
@@ -167,7 +156,7 @@ function NavItem({
   external?: boolean;
   active?: boolean;
 }) {
-  const className = `inline-flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring ${
+  const className = `inline-flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring ${
     active ? "bg-accent text-accent-foreground" : ""
   }`;
 

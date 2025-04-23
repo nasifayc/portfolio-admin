@@ -1,4 +1,3 @@
-import { getProjectById } from "@/actions/project";
 import { getAllSkills } from "@/actions/skill";
 import ProjectForm from "@/components/admin/project/ProjectForm";
 

@@ -26,12 +26,11 @@ function PSkillCard({ data }: Props) {
       });
     }
   }, [data.errorMessage]);
-
-  if (data.errorMessage) return null;
-
   useEffect(() => {
     setLocalSkills(data.skills ?? []);
   }, [data.skills]);
+
+  if (data.errorMessage) return null;
 
   return (
     <section className="flex flex-col items-start gap-4">
@@ -48,7 +47,7 @@ function PSkillCard({ data }: Props) {
         <h2 className="text-2xl font-bold">Skills</h2>{" "}
       </motion.div>
       <div className="mx-auto flex flex-wrap gap-1 gap-y-1">
-        {data.skills?.map((skill, index) => (
+        {localSkills?.map((skill, index) => (
           <motion.div
             key={skill.id}
             initial={{ opacity: 0, x: -150 }}

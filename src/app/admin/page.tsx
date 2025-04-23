@@ -1,5 +1,4 @@
 import { getDashboardStats, getWeeklyStats } from "@/actions/overview";
-import DashboardLoading from "@/components/shared/loading/SkeletonLoading";
 import { Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 

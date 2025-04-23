@@ -66,8 +66,6 @@ function ExperianceList({ data }: Props) {
     }
   }, [data.errorMessage]);
 
-  if (data.errorMessage) return null;
-
   useEffect(() => {
     setLocalExperiences(data.experiences ?? []);
   }, [data.experiences]);
@@ -78,6 +76,8 @@ function ExperianceList({ data }: Props) {
       threshold: 0.4,
     });
   }, [localExperiences]);
+
+  if (data.errorMessage) return null;
 
   const filteredExperiences = searchExp
     ? fuse.search(searchExp).map((result) => result.item)
@@ -91,6 +91,7 @@ function ExperianceList({ data }: Props) {
 
   const handleDeleteExp = (expId: string) => {
     startTransition(async () => {
+      console.log(isPending);
       const { errorMessage } = await deleteExperience(expId);
       if (errorMessage) {
         toast.error("Request Failed", {

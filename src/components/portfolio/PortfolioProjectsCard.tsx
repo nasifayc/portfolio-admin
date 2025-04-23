@@ -4,16 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { ProjectProps } from "../admin/project/ProjectList";
 import { toast } from "sonner";
 import { motion, useInView } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
-import { Button } from "../ui/button";
 import { Code, Github } from "lucide-react";
 
 type Props = {
@@ -39,11 +31,10 @@ function PortfolioProjectsCard({ data }: Props) {
       });
     }
   }, [data.errorMessage]);
-  if (data.errorMessage) return null;
-
   useEffect(() => {
     setLocalProjects(data.projects ?? []);
   }, [data.projects]);
+  if (data.errorMessage) return null;
 
   return (
     <section ref={sectionRef} className="space-y-20">
@@ -90,10 +81,7 @@ function PortfolioProjectsCard({ data }: Props) {
 
 function ProjectDetailCard({ project }: { project: ProjectProps }) {
   return (
-    <Card
-      key={project.id}
-      className="bg-background group/item flex h-full flex-col rounded-sm p-0 shadow-xs shadow-zinc-300 transition-all duration-300 hover:scale-105 hover:shadow-md dark:shadow-zinc-600"
-    >
+    <Card className="bg-background group/item flex h-full flex-col rounded-sm p-0 shadow-xs shadow-zinc-300 transition-all duration-300 hover:scale-105 hover:shadow-md dark:shadow-zinc-600">
       <CardContent className="flex h-full flex-col p-0">
         <a
           href={project.liveDemo}

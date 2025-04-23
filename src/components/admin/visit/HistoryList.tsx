@@ -1,6 +1,5 @@
 "use client";
-import { clearVisitHistory } from "@/actions/visit";
-import { Button } from "@/components/ui/button";
+
 import {
   Table,
   TableBody,
@@ -10,12 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Loader2 } from "lucide-react";
-import { useEffect, useState, useTransition } from "react";
-import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { UAParser } from "ua-parser-js";
 import ClearHistoryButton from "./ClearHistoryButton";
-// import  from "ua-parser-js";
-const UAParser = require("ua-parser-js");
 
 type Props = {
   data: { id: string; ip: string; userAgent: string; createdAt: Date }[] | null;
@@ -29,10 +25,18 @@ function HistoryList({ data }: Props) {
   }, [data]);
 
   const clearHistoryLocally = () => {
-    setLocalHistory((prev) => []);
+    setLocalHistory([]);
   };
 
-  return localHistory && localHistory.length > 0 ? (
+  if (!localHistory || localHistory.length === 0) {
+    return (
+      <div className="text-muted-foreground flex h-full items-center justify-center">
+        No Visit History
+      </div>
+    );
+  }
+
+  return (
     <>
       <ClearHistoryButton clearHistoryLocally={clearHistoryLocally} />
       <div>
@@ -41,7 +45,7 @@ function HistoryList({ data }: Props) {
           <TableHeader>
             <TableRow className="bg-muted">
               <TableHead className="w-[100px]">Id</TableHead>
-              <TableHead>IP </TableHead>
+              <TableHead>IP</TableHead>
               <TableHead>Device</TableHead>
               <TableHead>OS</TableHead>
               <TableHead>Browser</TableHead>
@@ -51,13 +55,14 @@ function HistoryList({ data }: Props) {
           <TableBody>
             {localHistory.map((history, index) => {
               const parsed = new UAParser(history.userAgent);
-              const browser = parsed.getBrowser(); // name, version
-              const os = parsed.getOS(); // name, version
+              const browser = parsed.getBrowser();
+              const os = parsed.getOS();
               const device = parsed.getDevice();
+
               return (
                 <TableRow
                   key={history.id}
-                  className={`${index % 2 !== 0 ? "bg-muted" : ""}`}
+                  className={index % 2 !== 0 ? "bg-muted" : ""}
                 >
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{history.ip}</TableCell>
@@ -74,10 +79,6 @@ function HistoryList({ data }: Props) {
         </Table>
       </div>
     </>
-  ) : (
-    <div className="text-muted-foreground flex h-full items-center justify-center">
-      No Visit History
-    </div>
   );
 }
 
