@@ -4,7 +4,17 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { motion, useMotionValue, animate } from "framer-motion";
-import { Home, TypeOutline, Github, Linkedin, Sun, Moon } from "lucide-react";
+import {
+  Home,
+  TypeOutline,
+  Github,
+  Linkedin,
+  Send,
+  Sun,
+  Moon,
+  Mail,
+  Twitter,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -19,7 +29,7 @@ const NAV_ITEMS = [
   {
     name: "Telegram",
     href: "https://t.me/Nasi_c",
-    icon: TypeOutline,
+    icon: Send,
     external: true,
   },
   {
@@ -32,6 +42,18 @@ const NAV_ITEMS = [
     name: "LinkedIn",
     href: "https://linkedin.com/in/nasifay-chala-810844282/?lipi=urn%3ali%3apage%3ad_flagship3_profile_view_base_contact_details%3b7bvdsgy0syo4duj4bgen8g%3d%3d",
     icon: Linkedin,
+    external: true,
+  },
+  {
+    name: "Email",
+    href: "mailto:nasifayc11@gmail.com",
+    icon: Mail,
+    external: true,
+  },
+  {
+    name: "Twitter",
+    href: "https://twitter.com/nasifay_c",
+    icon: Twitter,
     external: true,
   },
 ];

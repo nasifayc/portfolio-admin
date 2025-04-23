@@ -70,6 +70,7 @@ function PortfolioProjectsCard({ data }: Props) {
       >
         {localProjects.map((project, index) => (
           <motion.div
+            key={project.id}
             initial={{ opacity: 0, x: 150 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{
@@ -79,7 +80,7 @@ function PortfolioProjectsCard({ data }: Props) {
               delay: 0.5 * index,
             }}
           >
-            <ProjectDetailCard key={project.id} project={project} />
+            <ProjectDetailCard project={project} />
           </motion.div>
         ))}
       </div>
