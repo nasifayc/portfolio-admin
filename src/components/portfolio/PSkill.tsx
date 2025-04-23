@@ -9,7 +9,6 @@ async function PSkill() {
     return null;
   }
 
-  // return PSkillCard if !skill.errorMessage
   return <PSkillCard data={skills} />;
 }
 

@@ -69,7 +69,7 @@ function WorkExpCard({ data }: Props) {
           }}
         >
           <div className="w-fit cursor-pointer rounded-full border border-gray-400 px-3 py-1 text-xs transition-all hover:scale-110">
-            {`${format(new Date(exp.startingDate), "MMM YYY")} - ${exp.stillWorking ? "Present" : format(new Date(exp.endDate ?? Date.now()), "MMM YYY")}`}
+            {`${format(new Date(exp.startingDate), "MMM yyy")} - ${exp.stillWorking ? "Present" : format(new Date(exp.endDate ?? Date.now()), "MMM YYY")}`}
           </div>
 
           <div className="pl-10">
@@ -107,7 +107,7 @@ const ExperienceBulletPoint = ({ roleData }: { roleData: string[] }) => {
   return (
     <div className="flex flex-col items-start gap-2">
       {roleData.map((role) => (
-        <div className="flex items-center gap-2">
+        <div key={role} className="flex items-center gap-2">
           <div className="text-amber-500">
             <Sparkle size={12} />
           </div>
