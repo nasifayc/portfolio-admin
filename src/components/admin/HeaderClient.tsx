@@ -7,6 +7,7 @@ import LogoutButton from "./LogoutButton";
 import { getUser } from "@/auth/server";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
 
 interface HeaderClientProps {
   user: {

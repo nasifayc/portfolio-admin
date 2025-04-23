@@ -64,9 +64,9 @@ function NavigationHeader() {
         onMouseEnter={() => setIsContainerHovered(true)}
         onMouseLeave={() => setIsContainerHovered(false)}
         animate={{
-          gap: isContainerHovered ? "0.75rem" : "0.5rem",
+          gap: isContainerHovered ? "0.75rem" : "0.1rem",
         }}
-        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+        transition={{ type: "spring", stiffness: 200, damping: 20 }}
         className="dark:bg-background/40 relative flex items-center justify-center rounded-full border px-3 py-2 shadow-sm backdrop-blur-sm"
       >
         {NAV_ITEMS.map((item, index) => (
@@ -78,10 +78,11 @@ function NavigationHeader() {
           >
             <motion.div
               animate={{
-                paddingLeft: hoveredIndex === index ? "0.75rem" : "0.5rem",
-                paddingRight: hoveredIndex === index ? "0.75rem" : "0.5rem",
+                paddingLeft: hoveredIndex === index ? "0.75rem" : "0.1rem",
+                paddingRight: hoveredIndex === index ? "0.75rem" : "0.1rem",
               }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              whileHover={{ scale: 1.4 }}
+              transition={{ type: "spring", stiffness: 100, damping: 10 }}
             >
               <NavItem
                 href={item.href}

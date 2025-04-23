@@ -40,7 +40,7 @@ function PSkillCard({ data }: Props) {
         animate={{ opacity: 1, x: 0 }}
         transition={{
           type: "spring",
-          stiffness: 50,
+          stiffness: 30,
           damping: 10,
           delay: 0.5,
         }}
@@ -60,7 +60,7 @@ function PSkillCard({ data }: Props) {
               delay: 0.6 + index / 8,
             }}
           >
-            <div className="bg-primary text-secondary transtion-all flex cursor-pointer items-center justify-center gap-3 rounded-sm px-4 py-2 text-xs hover:scale-105">
+            <div className="bg-primary text-secondary transtion-all flex cursor-pointer items-center justify-center gap-3 rounded-sm px-4 py-2 text-xs duration-300 hover:scale-105">
               <Image
                 src={skill.imageUrl}
                 alt={skill.name}

@@ -9,7 +9,7 @@ function About() {
         animate={{ opacity: 1, x: 0 }}
         transition={{
           type: "spring",
-          stiffness: 50,
+          stiffness: 30,
           damping: 10,
           delay: 0.5,
         }}

@@ -3,6 +3,8 @@ import NavigationHeader from "./header/PHearder";
 import PSkill from "./PSkill";
 import Hero from "./Hero";
 import WorkExperience from "./WorkExp";
+import Education from "./Education";
+import PortfolioProjectsSection from "./PortfolioProjectsSection";
 
 function Landing() {
   return (
@@ -15,29 +17,9 @@ function Landing() {
         {/* Skills Section */}
         <PSkill />
         <WorkExperience />
+        <Education />
         {/* Projects Section */}
-
-        <section className="py-12">
-          <h2 className="mb-8 text-center text-3xl font-bold">
-            Featured Projects
-          </h2>
-          <div className="grid gap-8 md:grid-cols-2">
-            {[1, 2, 3].map((project) => (
-              <div
-                key={project}
-                className="rounded-lg border p-6 transition-shadow hover:shadow-lg"
-              >
-                <div className="bg-secondary mb-4 h-48 rounded"></div>
-                <h3 className="mb-2 text-xl font-semibold">
-                  Project {project}
-                </h3>
-                <p className="text-muted-foreground">
-                  Brief description of the project and technologies used.
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
+        <PortfolioProjectsSection />
 
         {/* Contact Section */}
         <section className="py-12 text-center">

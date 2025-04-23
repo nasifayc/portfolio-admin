@@ -47,7 +47,7 @@ function WorkExpCard({ data }: Props) {
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{
           type: "spring",
-          stiffness: 50,
+          stiffness: 30,
           damping: 10,
         }}
       >
@@ -63,13 +63,13 @@ function WorkExpCard({ data }: Props) {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{
             type: "spring",
-            stiffness: 300,
+            stiffness: 30,
             damping: 10,
             delay: 0.9 * index,
           }}
         >
-          <div className="w-fit cursor-pointer rounded-full border border-gray-400 px-3 py-1 text-xs transition-all hover:scale-110">
-            {`${format(new Date(exp.startingDate), "MMM yyy")} - ${exp.stillWorking ? "Present" : format(new Date(exp.endDate ?? Date.now()), "MMM YYY")}`}
+          <div className="w-fit cursor-pointer rounded-full border border-gray-400 px-3 py-1 text-xs transition-all duration-300 hover:scale-110">
+            {`${format(new Date(exp.startingDate), "MMM yyy")} - ${exp.stillWorking ? "Present" : format(new Date(exp.endDate ?? Date.now()), "MMM yyy")}`}
           </div>
 
           <div className="pl-10">

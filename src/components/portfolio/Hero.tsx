@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
+import { Loader2 } from "lucide-react";
 
 function Hero() {
   return (
@@ -11,7 +12,7 @@ function Hero() {
         animate={{ opacity: 1, x: 0 }}
         transition={{
           type: "spring",
-          stiffness: 50,
+          stiffness: 30,
           damping: 10,
           delay: 0.2,
         }}
@@ -44,7 +45,7 @@ function Hero() {
           src="/nasipic.jpg"
           width={100}
           height={100}
-          className="h-36 w-36 shrink-0 rounded-full object-cover"
+          className="h-36 w-36 shrink-0 cursor-pointer rounded-full object-cover grayscale filter duration-300 hover:scale-105 hover:grayscale-0"
           alt="User Image"
         />
       </motion.div>
