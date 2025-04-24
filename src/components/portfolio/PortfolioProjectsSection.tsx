@@ -1,6 +1,8 @@
+export const dynamic = "force-dynamic";
+
 import { getProjects } from "@/actions/project";
-import dynamic from "next/dynamic";
-const PortfolioProjectsCard = dynamic(() => import("./PortfolioProjectsCard"));
+import dynamic2 from "next/dynamic";
+const PortfolioProjectsCard = dynamic2(() => import("./PortfolioProjectsCard"));
 
 async function PortfolioProjectsSection() {
   const response = await getProjects();

@@ -1,6 +1,8 @@
+export const dynamic = "force-dynamic";
+
 import { getExperiences } from "@/actions/experiance";
-import dynamic from "next/dynamic";
-const WorkExpCard = dynamic(() => import("./WorkExpCard"));
+import dynamic2 from "next/dynamic";
+const WorkExpCard = dynamic2(() => import("./WorkExpCard"));
 
 async function WorkExp() {
   const response = await getExperiences();

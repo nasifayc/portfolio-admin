@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SkillProps } from "../admin/techstack/TechStackList";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -13,7 +13,6 @@ type Props = {
 };
 
 function PSkillCard({ data }: Props) {
-  const [localSkills, setLocalSkills] = useState(data.skills ?? []);
   useEffect(() => {
     if (data.errorMessage) {
       toast.error("Failed to get projects", {
@@ -26,9 +25,6 @@ function PSkillCard({ data }: Props) {
       });
     }
   }, [data.errorMessage]);
-  useEffect(() => {
-    setLocalSkills(data.skills ?? []);
-  }, [data.skills]);
 
   if (data.errorMessage) return null;
 
@@ -47,7 +43,7 @@ function PSkillCard({ data }: Props) {
         <h2 className="text-2xl font-bold">Skills</h2>{" "}
       </motion.div>
       <div className="mx-auto flex flex-wrap gap-1 gap-y-1">
-        {localSkills?.map((skill, index) => (
+        {data.skills?.map((skill, index) => (
           <motion.div
             key={skill.id}
             initial={{ opacity: 0, x: -150 }}

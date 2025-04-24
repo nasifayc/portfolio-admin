@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ExperienceProps } from "../admin/experiance/ExperianceList";
 import { toast } from "sonner";
 import { motion, useInView } from "framer-motion";
@@ -17,9 +17,6 @@ type Props = {
 function WorkExpCard({ data }: Props) {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
-  const [localExperiences, setLocalExperiences] = useState(
-    data.experiences ?? [],
-  );
 
   useEffect(() => {
     if (data.errorMessage) {
@@ -33,9 +30,6 @@ function WorkExpCard({ data }: Props) {
       });
     }
   }, [data.errorMessage]);
-  useEffect(() => {
-    setLocalExperiences(data.experiences ?? []);
-  }, [data.experiences]);
 
   if (data.errorMessage) return null;
 
@@ -55,7 +49,7 @@ function WorkExpCard({ data }: Props) {
           <div className="h-7 border-l border-dashed border-gray-400"></div>
         </div>
       </motion.div>
-      {localExperiences.map((exp, index) => (
+      {data.experiences?.map((exp, index) => (
         <motion.div
           key={exp.id}
           initial={{ opacity: 0, y: 20 }}

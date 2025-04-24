@@ -18,7 +18,6 @@ type Props = {
 function PortfolioProjectsCard({ data }: Props) {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
-  const [localProjects, setLocalProjects] = useState(data.projects ?? []);
   useEffect(() => {
     if (data.errorMessage) {
       toast.error("Failed to get projects", {
@@ -31,9 +30,7 @@ function PortfolioProjectsCard({ data }: Props) {
       });
     }
   }, [data.errorMessage]);
-  useEffect(() => {
-    setLocalProjects(data.projects ?? []);
-  }, [data.projects]);
+
   if (data.errorMessage) return null;
 
   return (
@@ -59,7 +56,7 @@ function PortfolioProjectsCard({ data }: Props) {
         className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
         style={{ gridAutoFlow: "dense" }}
       >
-        {localProjects.map((project, index) => (
+        {data.projects?.map((project, index) => (
           <motion.div
             key={project.id}
             initial={{ opacity: 0, x: 150 }}
