@@ -182,7 +182,9 @@ function ExperianceList({ data }: Props) {
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger>
-                        <Button className="cursor-pointer">Action</Button>
+                        <div className="bg-primary text-secondary cursor-pointer rounded-sm px-3 py-1 text-sm">
+                          Action
+                        </div>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
