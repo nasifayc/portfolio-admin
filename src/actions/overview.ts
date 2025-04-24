@@ -20,8 +20,8 @@ export const getDashboardStats = async () => {
       },
     });
 
-    const projectsByTag = projectsByTagRaw.reduce<Record<string, number>>(
-      (acc, curr) => {
+    const projectsByTag = projectsByTagRaw.reduce(
+      (acc: Record<string, number>, curr) => {
         if (!acc[curr.tag]) {
           acc[curr.tag] = 0;
         }
@@ -35,7 +35,7 @@ export const getDashboardStats = async () => {
 
     const currentRoles = experience.filter((e) => e.stillWorking).length;
 
-    const totalExperienceMonths = experience.reduce((acc, exp) => {
+    const totalExperienceMonths = experience.reduce((acc: number, exp) => {
       const start = new Date(exp.startingDate);
       const end = exp.stillWorking ? new Date() : new Date(exp.endDate!);
       const months =
