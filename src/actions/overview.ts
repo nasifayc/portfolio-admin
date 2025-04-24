@@ -8,13 +8,6 @@ export const getDashboardStats = async () => {
     const totalTechStacks = await prisma.techStack.count();
     const totalExp = await prisma.experience.count();
     const totalVisits = await prisma.visit.count();
-    // const totalVisitsToday = await prisma.visit.count({
-    //   where: {
-    //     createdAt: {
-    //       gte: new Date(new Date().setHours(0, 0, 0, 0)),
-    //     },
-    //   },
-    // });
 
     const projectsByTagRaw = await prisma.techStack.findMany({
       select: {
@@ -27,7 +20,7 @@ export const getDashboardStats = async () => {
       },
     });
 
-    const projectsByTag = projectsByTagRaw.reduce(
+    const projectsByTag = projectsByTagRaw.reduce<Record<string, number>>(
       (acc, curr) => {
         if (!acc[curr.tag]) {
           acc[curr.tag] = 0;
