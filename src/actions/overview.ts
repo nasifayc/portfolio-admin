@@ -21,7 +21,10 @@ export const getDashboardStats = async () => {
     });
 
     const projectsByTag = projectsByTagRaw.reduce(
-      (acc: Record<string, number>, curr) => {
+      (
+        acc: Record<string, number>,
+        curr: { tag: string; _count: { projects: number } },
+      ) => {
         if (!acc[curr.tag]) {
           acc[curr.tag] = 0;
         }
