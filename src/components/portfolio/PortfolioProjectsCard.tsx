@@ -96,7 +96,7 @@ function ProjectDetailCard({ project }: { project: ProjectProps }) {
 
         <div className="flex flex-1 flex-col gap-2 p-2">
           <h2 className="font-semibold">{project.title}</h2>
-          <span className="text-muted-foreground line-clamp-2 text-xs">
+          <span className="text-muted-foreground text-xs">
             {project.description}
           </span>
           <div className="flex flex-wrap items-center gap-1 py-2">
