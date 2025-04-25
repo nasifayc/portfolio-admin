@@ -7,7 +7,7 @@ const WorkExpCard = dynamic2(() => import("./WorkExpCard"));
 async function WorkExp() {
   const response = await getExperiences();
   if (response.errorMessage) {
-    return <h1>No Work Experience</h1>;
+    return <p className="py-5">Work Experience Loading...</p>;
   }
   return <WorkExpCard data={response} />;
 }

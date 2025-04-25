@@ -8,7 +8,7 @@ async function PSkill() {
   const skills = await getAllSkills();
 
   if (skills.errorMessage) {
-    return null;
+    return <p className="py-5">Skill Loading...</p>;
   }
 
   return <PSkillCard data={skills} />;

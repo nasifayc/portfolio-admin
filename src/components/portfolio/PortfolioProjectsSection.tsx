@@ -7,7 +7,7 @@ const PortfolioProjectsCard = dynamic2(() => import("./PortfolioProjectsCard"));
 async function PortfolioProjectsSection() {
   const response = await getProjects();
   if (response.errorMessage) {
-    return null;
+    return <p>Projects Loading...</p>;
   }
   return <PortfolioProjectsCard data={response} />;
 }
