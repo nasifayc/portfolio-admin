@@ -48,7 +48,7 @@ export const getProjects = async () => {
   try {
     const projects = await prisma.project.findMany({
       include: { techStack: true },
-      orderBy: { createdAt: "desc" },
+      orderBy: { updatedAt: "desc" },
     });
     return { projects, errorMessage: null };
   } catch (e) {
