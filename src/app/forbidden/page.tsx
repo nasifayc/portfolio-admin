@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 function ForbiddenScreen() {
   return (
@@ -14,12 +15,12 @@ function ForbiddenScreen() {
       <p className="mb-4 text-lg text-gray-700">
         Oops! You don't have permission to access this page.
       </p>
-      <a
+      <Link
         href="/"
         className="inline-block rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700"
       >
         Go Back Home
-      </a>
+      </Link>
     </div>
   );
 }
