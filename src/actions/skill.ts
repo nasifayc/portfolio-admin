@@ -33,7 +33,7 @@ export const createSkill = async ({ name, imageUrl, tag }: TechstackProps) => {
 export const getAllSkills = async () => {
   try {
     const skills = await prisma.techStack.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: { updatedAt: "desc" },
     });
 
     return { skills, errorMessage: null };
